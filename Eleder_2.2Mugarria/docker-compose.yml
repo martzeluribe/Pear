@@ -9,7 +9,7 @@ services:
     build:
       context: ./laravel
       dockerfile: Dockerfile
-    container_name: laravel_app
+    container_name: laravel_app_proiektua
     working_dir: /var/www/html
     volumes:
       - ./laravel:/var/www/html
@@ -27,9 +27,7 @@ services:
     ports:
       - "8069:8069"
     volumes:
-      # Conecta tu carpeta local con la carpeta de addons de Odoo
       - ./odoo/addons:/mnt/extra-addons
-      # Guarda los datos de sesión y archivos de Odoo
       - odoo_data:/var/lib/odoo
     environment:
       - HOST=postgres
@@ -43,7 +41,6 @@ services:
     ports:
       - 5432:5432
     volumes:
-      # Guarda la base de datos para que no se borre al reiniciar
       - postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
