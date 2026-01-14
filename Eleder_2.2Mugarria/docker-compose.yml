@@ -27,6 +27,11 @@ services:
       - postgres
     ports:
       - "8069:8069"
+    volumes:
+      # Conecta tu carpeta local con la carpeta de addons de Odoo
+      - ./odoo/addons:/mnt/extra-addons
+      # Guarda los datos de sesión y archivos de Odoo
+      - odoo_data:/var/lib/odoo
     environment:
       - HOST=postgres
       - USER=odoo
@@ -35,6 +40,11 @@ services:
       - app-network
   postgres:
     image: postgres:15
+    ports:
+      - 5432:5432
+    volumes:
+      # Guarda la base de datos para que no se borre al reiniciar
+      - postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=myodoo
