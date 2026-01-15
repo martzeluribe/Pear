@@ -17,6 +17,8 @@ class Pisua extends Model
     protected $fillable = [
         'izena',
         'kodigoa',
+        // 'dezkripzioa',
+
         'odoo_id',
         'synced',
         'sync_error',
@@ -26,5 +28,20 @@ class Pisua extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    /*Pisu bakoitzak zein user dituen jakiteko.*/ 
+
+    //    // Pisuaren jabea den erabiltzailea
+    // public function owner()
+    // {
+    //     return $this->belongsTo(User::class, 'user_id');
+    // }
+
+    // // Pisuko erabiltzaileak
+    // public function users()
+    // {
+    //     return $this->belongsToMany(User::class, 'pisua_user')
+    //         ->withTimestamps();
+    // }
 
 }
