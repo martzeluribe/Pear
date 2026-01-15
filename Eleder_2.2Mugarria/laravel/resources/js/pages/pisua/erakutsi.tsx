@@ -1,64 +1,128 @@
 import React from 'react';
+import { Head, Link } from '@inertiajs/react';
+import Header from '@/Components/Header'; 
+import Footer from '@/components/footer';
+import { Button } from '@/components/ui/button';
+import { PlusCircle, Users } from 'lucide-react'; // Asegúrate de tener lucide-react instalado
 
-interface Pisua {
-    id: number;
-    name: string;
-    code: string;
-    // Odoo-k Many2one eremuak [id, "izena"] bezala itzultzen ditu, edo false hutsik badago
-    //coordinator_id: [number, string] | false;
-}
+export default function Pisuak() {
 
-interface ErakutsiProps {
-    pisuak: Pisua[];
-}
+    // --- DATOS DE EJEMPLO (Iguales a tu foto) ---
+    const pisos = [
+        {
+            id: 1,
+            izena: "Pisua 1",
+            deskripzioa: "Deskripzioa",
+            // Foto de salón con gente
+            img: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=2064&auto=format&fit=crop", 
+            bgColor: "bg-[#99dabb]", // Verde menta
+            users: [
+                { name: "Josune", color: "bg-[#ff7eb6]" }, // Rosa
+                { name: "Martzel", color: "bg-[#fff585]" }, // Amarillo
+                { name: "Eleder", color: "bg-[#ffb04f]" }, // Naranja
+            ]
+        },
+        {
+            id: 2,
+            izena: "Pisua 2",
+            deskripzioa: "Deskripzioa",
+            // Foto de cocina
+            img: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=2070&auto=format&fit=crop", 
+            bgColor: "bg-[#ffdd94]", // Amarillo pastel
+            users: [
+                { name: "Luken", color: "bg-[#ff7eb6]" },
+                { name: "Iker", color: "bg-[#fff585]" },
+                { name: "Igor", color: "bg-[#ffb04f]" },
+            ]
+        }
+    ];
 
-export default function erakutsi({ pisuak }: ErakutsiProps) {
     return (
-        <div className="p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">Pisuen Zerrenda</h2>
-            
-            {pisuak.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">Ez dago pisurik erakusteko.</p>
-            ) : (
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Izena
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Kodea
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Koordinatzailea
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {pisuak.map((pisua) => (
-                                <tr key={pisua.id} className="hover:bg-gray-50 transition-colors">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        {pisua.name}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <span className="bg-blue-100 text-blue-800 py-1 px-2 rounded-full text-xs">
-                                            {pisua.code}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {/* Odoo-ren Many2one formatua kudeatu: [id, izena] */}
-                                        {/* {Array.isArray(pisua.coordinator_id) 
-                                            ? pisua.coordinator_id[1] 
-                                            : <span className="text-gray-400 italic">Esleitu gabe</span>
-                                        } */}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+        <div className="flex min-h-screen flex-col bg-white">
+            <Head title="Pisuak" />
+
+            <Header />
+
+            <main className="flex-1 px-4 py-8 md:px-12 lg:px-20">
+                
+                {/* CABECERA DE LA SECCIÓN */}
+                <div className="mb-6 flex items-center justify-between border-b border-red-500 pb-2"> {/* Línea roja simulada */}
+                    <div className="flex items-center gap-3">
+                        {/* Icono de grupo */}
+                        <Users className="h-10 w-10 text-black" strokeWidth={2} />
+                        <h1 className="text-4xl font-normal text-black">Pisuak</h1>
+                    </div>
+
+                    {/* Botón Gehitu Pisua */}
+                    {/* Usamos '#' para evitar el error de 'route' por ahora */}
+                    <Link href="#"> 
+                        <Button className="flex items-center gap-2 rounded-lg bg-[#6a65ff] px-6 py-6 text-lg text-white hover:bg-[#5853e0]">
+                            <PlusCircle className="h-6 w-6" />
+                            Gehitu pisua
+                        </Button>
+                    </Link>
                 </div>
-            )}
+
+                {/* LISTADO DE PISOS */}
+                <div className="flex flex-col gap-6">
+                    {pisos.map((piso) => (
+                        <div 
+                            key={piso.id} 
+                            className={`overflow-hidden rounded-xl shadow-sm ${piso.bgColor}`}
+                        >
+                            <div className="flex flex-col md:flex-row h-full">
+                                
+                                {/* IMAGEN (Izquierda) */}
+                                <div className="md:w-[450px] p-5">
+                                    <img 
+                                        src={piso.img} 
+                                        alt={piso.izena} 
+                                        className="h-64 w-full rounded-lg object-cover md:h-full shadow-sm"
+                                    />
+                                </div>
+
+                                {/* CONTENIDO (Derecha) */}
+                                <div className="flex flex-1 flex-col justify-between p-6 pl-2">
+                                    
+                                    {/* Título y descripción */}
+                                    <div>
+                                        <h2 className="text-3xl font-normal text-black mb-1">
+                                            {piso.izena}
+                                        </h2>
+                                        <p className="text-2xl font-light text-black">
+                                            {piso.deskripzioa}
+                                        </p>
+                                    </div>
+
+                                    {/* Usuarios y Botón SARTU */}
+                                    <div className="flex items-end justify-between mt-8">
+                                        
+                                        {/* Pastillas de colores */}
+                                        <div className="flex flex-wrap gap-3">
+                                            {piso.users.map((user, idx) => (
+                                                <span 
+                                                    key={idx}
+                                                    className={`rounded-md px-4 py-1 text-base font-medium text-black shadow-sm ${user.color}`}
+                                                >
+                                                    {user.name}
+                                                </span>
+                                            ))}
+                                        </div>
+
+                                        {/* Botón SARTU */}
+                                        <Button className="bg-[#1f3a60] px-8 py-2 text-lg font-bold text-white hover:bg-[#152a48]">
+                                            SARTU
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+            </main>
+
+            <Footer />
         </div>
     );
 }
