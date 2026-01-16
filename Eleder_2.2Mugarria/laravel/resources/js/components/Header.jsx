@@ -1,13 +1,13 @@
 import React from 'react';
-import { Link, usePage } from '@inertiajs/react'; // Importamos usePage
+import { dashboard, login, register } from '@/routes';
+import { Link, usePage } from '@inertiajs/react'; 
 import { LogIn, House, User, LogOut } from 'lucide-react';
 
 export default function Header() {
-    // Extraemos 'auth' de las props globales de Inertia
     const { auth } = usePage().props;
 
     return (
-        <nav className="flex justify-between items-center px-8 py-4 bg-[#2D447E] text-white shadow-md">
+        <nav className="flex justify-between items-center px-8 py-4 text-white shadow-md" style={{ backgroundColor: '#1e3a8a' }}>
             
             {/* Logo y Contenedor Izquierdo */}
             <div className="flex items-center gap-8">
@@ -18,14 +18,22 @@ export default function Header() {
                     <span className="text-2xl font-bold tracking-tight">Pisukideak</span>
                 </Link>
 
-                {/* LINKS CONDICIONALES (Solo si está logeado) */}
+                {/* LINKS CONDICIONALES */}
                 {auth.user && (
-                    <div className="flex items-center gap-4 text-sm font-medium border-l border-blue-400 pl-6">
-                        <Link href="/hasiera" className="hover:text-blue-200">Hasiera</Link>
-                        <span className="opacity-50">|</span>
+                    <div className="flex items-center gap-4 text-sm font-medium border-l-2 border-white pl-6 py-1">
+                        <Link href="/" className="hover:text-blue-200">Welcome</Link>
+                        
+                        <span className="h-6 border-l border-white opacity-100"></span>
+                        
+                        <Link href={dashboard()} className="hover:text-blue-200">Dashboard</Link>
+                        
+                        <span className="h-6 border-l border-white opacity-100"></span>
+                        
                         <Link href="/pisuak" className="hover:text-blue-200">Pisuak</Link>
-                        <span className="opacity-50">|</span>
-                        <Link href="/ezarpenak" className="hover:text-blue-200">Ezarpenak</Link>
+                        
+                        <span className="h-6 border-l border-white opacity-100"></span>
+                        
+                        <Link href="/pisuak" className="hover:text-blue-200">Erabiltzaileak</Link>
                     </div>
                 )}
             </div>
@@ -35,7 +43,7 @@ export default function Header() {
                 {auth.user ? (
                     <div className="flex items-center gap-6">
                         <Link 
-                            href="settings/profile" // Usamos el nombre de la ruta de Laravel
+                            href="settings/profile" 
                             className="flex items-center gap-2 hover:text-blue-200 transition-colors group"
                         >
                             <User size={18} className="group-hover:scale-110 transition-transform" />
