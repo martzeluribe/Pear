@@ -34,6 +34,11 @@ export default function Header() {
                         <span className="h-6 border-l border-white opacity-100"></span>
                         
                         <Link href="/pisuak" className="hover:text-blue-200">Erabiltzaileak</Link>
+
+                        <span className="h-6 border-l border-white opacity-100"></span>
+                        
+                        <Link href="/pisua" className="hover:text-blue-200">Pisuen CRUD-a (Admin)</Link>
+
                     </div>
                 )}
             </div>
