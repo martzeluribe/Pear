@@ -31,6 +31,11 @@ class DatabaseSeeder extends Seeder
 
         echo 'Koordinatzailea sortuta eta Job-era bidalita\n';
 
+        $this->call([
+            UserSeeder::class,
+            // Otros seeders si los tuvieras...
+        ]);
+
     }
 
 }
