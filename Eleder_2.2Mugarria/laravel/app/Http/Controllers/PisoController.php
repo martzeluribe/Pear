@@ -15,17 +15,30 @@ use Illuminate\Support\Facades\Auth;
 class PisoController extends Controller
 {
 
-    public function index(OdooService $odoo)
-    {
+public function index(Request $request)
+{
+    $query = Pisua::query();
 
-        $pisuak = $odoo->search('pisua', ['name','code']);
-        // dump($pisuak);
-        return Inertia::render('pisua/erakutsi', [
-            'pisuak' => $pisuak,
-        ]);
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        // Usamos el parametro 'type' o por defecto 'izena'
+        $type = $request->input('type', 'izena'); 
+        
+        // Mapeo seguro para evitar inyecciones de SQL si alguien manipula la URL
+        $allowedColumns = ['izena', 'kodigoa', 'user_id'];
+        
+        if (in_array($type, $allowedColumns)) {
+            $query->where($type, 'like', '%' . $search . '%');
+        }
     }
 
-    public function create()
+    $pisuak = $query->get();
+
+    return Inertia::render('pisua/erakutsi', [
+        'pisuak' => $pisuak,
+        'filters' => $request->only(['search', 'type']), // Pasamos 'type' de vuelta
+    ]);
+}    public function create()
     {
         return Inertia::render('pisua/sortu');
     }
@@ -77,5 +90,14 @@ class PisoController extends Controller
         SyncEditPisuaToOdoo::dispatch($pisua);
 
         return redirect()->route('pisua.index');
+    }
+
+    public function destroy(\App\Models\Pisua $pisua)
+    {
+        // 1. Borramos el piso
+        $pisua->delete();
+
+        // 2. Redirigimos a la lista
+        return to_route('pisua.index');
     }
 }
