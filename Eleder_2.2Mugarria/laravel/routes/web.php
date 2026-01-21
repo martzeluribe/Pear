@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
+    Route::get('/nirepisuak', [PisoController::class, 'userDashboard'])->name('pisua.nire_pisuak');
 }); // <--- FIN DEL GRUPO (Esta es la única llave de cierre necesaria para el middleware)
 
 require __DIR__.'/settings.php';
