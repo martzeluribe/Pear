@@ -7,24 +7,27 @@ import AuthLayout from '@/layouts/auth-layout';
 import { store } from '@/routes/password/confirm';
 import { Form, Head } from '@inertiajs/react';
 
+import { Lock } from 'lucide-react';
+
+
 export default function ConfirmPassword() {
     return (
         <AuthLayout
-            title="Confirm your password"
-            description="This is a secure area of the application. Please confirm your password before continuing."
+            title="Konfirmatu zure pasahitza"
+            description="Hau aplikazioaren alde seguru bat da. Mesedez konfirmatu zure pasahitza."
         >
-            <Head title="Confirm password" />
+            <Head title="Konfirmatu pasahitza" />
 
             <Form {...store.form()} resetOnSuccess={['password']}>
                 {({ processing, errors }) => (
                     <div className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">Pasahitza</Label>
                             <Input
                                 id="password"
                                 type="password"
                                 name="password"
-                                placeholder="Password"
+                                placeholder="Pasahitza"
                                 autoComplete="current-password"
                                 autoFocus
                             />
@@ -39,7 +42,7 @@ export default function ConfirmPassword() {
                                 data-test="confirm-password-button"
                             >
                                 {processing && <Spinner />}
-                                Confirm password
+                                Konfirmatu pasahitza
                             </Button>
                         </div>
                     </div>

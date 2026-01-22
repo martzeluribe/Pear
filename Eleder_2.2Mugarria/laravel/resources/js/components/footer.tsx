@@ -3,8 +3,17 @@ import { Phone, Mail, Home, Instagram, Facebook, Twitter } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '2rem 3rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '2rem' }}>
+    <footer style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '2rem 1rem' }}>
+      {/* Contenedor principal centrado */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', // Mantiene separación, pero dentro del límite de anchura
+        flexWrap: 'wrap', 
+        gap: '2rem',
+        maxWidth: '1300px', // Limita el ancho para que no se vaya a los extremos
+        margin: '0 auto',   // Centra el bloque horizontalmente
+        width: '100%'       // Asegura que ocupe espacio en móviles
+      }}>
         
         {/* Lado izquierdo: Contacto */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -20,8 +29,8 @@ const Footer = () => {
             <span>pear@gmail.com</span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-            <Home size={20} style={{ marginTop: '4px' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Home size={20} />
             <div>
               <p style={{ margin: 0 }}>Errebuelta Kalea, 6</p>
               <p style={{ margin: 0 }}>20570 Bergara, Gipuzkoa</p>

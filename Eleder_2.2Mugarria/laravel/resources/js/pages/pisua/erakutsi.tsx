@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import Header from '@/Components/Header'; 
-import Footer from '@/Components/Footer'; 
+import Footer from '@/components/footer';
 import { Search, Trash2, Plus, Pencil, Hash, Calendar, User, Clock, Filter } from 'lucide-react';
 
 interface Filters {
     search?: string;
-    type?: string; // AÑADIDO: Recibimos el tipo de filtro actual
+    type?: string; // Recibimos el tipo de filtro actual
 }
 
 interface PisuaLocal {
@@ -26,7 +26,6 @@ interface Props {
 export default function Erakutsi({ pisuak, filters }: Props) {
     
     const [search, setSearch] = useState(filters.search || '');
-    // AÑADIDO: Estado para el tipo de búsqueda (por defecto 'izena')
     const [searchType, setSearchType] = useState(filters.type || 'izena');
     
     const isMounted = useRef(false);
@@ -49,7 +48,7 @@ export default function Erakutsi({ pisuak, filters }: Props) {
                     '/pisua',
                     { 
                         search: search,
-                        type: searchType // AÑADIDO: Enviamos el tipo de filtro al backend
+                        type: searchType
                     },
                     { 
                         preserveState: true,
@@ -63,7 +62,7 @@ export default function Erakutsi({ pisuak, filters }: Props) {
         } else {
             isMounted.current = true;
         }
-    }, [search, searchType]); // AÑADIDO: Se ejecuta también cuando cambia searchType
+    }, [search, searchType]);
 
     const ezabatuPisua = (id: number, izena: string) => {
         if (window.confirm(`Ziur zaude "${izena}" pisua ezabatu nahi duzula?`)) {
@@ -71,7 +70,6 @@ export default function Erakutsi({ pisuak, filters }: Props) {
         }
     };
 
-    // Opciones para los botones de filtro
     const filterOptions = [
         { id: 'izena', label: 'Izena' },
         { id: 'kodigoa', label: 'Kodea' },
@@ -82,7 +80,7 @@ export default function Erakutsi({ pisuak, filters }: Props) {
         <>
             <Header/>
             
-            <div className="min-h-screen bg-white p-8">
+            <div className="bg-white p-8">
                 <Head title="Pisuen Zerrenda" />
                 
                 <div className="max-w-5xl mx-auto">
@@ -97,12 +95,12 @@ export default function Erakutsi({ pisuak, filters }: Props) {
                         </Link>
                     </div>
 
-                    <div className="bg-gray-200 rounded-xl p-6 min-h-[500px]">
+                    <div className="bg-gray-200 rounded-xl p-6 max-h-[500px] overflow-y-auto mb-6">
                         
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                             <h2 className="text-2xl font-semibold text-gray-700">Pisuak</h2>
                             
-                            {/* SECCIÓN DEL BUSCADOR CON FILTROS */}
+                            {/* Buscador con filtros */}
                             <div className="flex flex-col w-full md:w-auto gap-2">
                                 
                                 {/* Botones de filtro */}
@@ -129,7 +127,6 @@ export default function Erakutsi({ pisuak, filters }: Props) {
                                 <div className="relative w-full md:w-72">
                                     <input
                                         type="text"
-                                        // Placeholder dinámico según lo seleccionado
                                         placeholder={`Bilatu ${searchType} bidez...`}
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
