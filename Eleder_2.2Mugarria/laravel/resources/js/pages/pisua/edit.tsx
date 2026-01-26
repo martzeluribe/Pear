@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useForm, Link, Head } from '@inertiajs/react'; // Head gehitu dut
+import { useForm, Link, Head } from '@inertiajs/react';
 import Header from '@/Components/Header'; 
-import Footer from '@/Components/Footer';
-import { Plus, Save } from 'lucide-react'; // Ikonoak
+import Footer from '@/components/footer';
+import { Plus, Save, ArrowLeft } from 'lucide-react';
 
 interface Pisua {
     id: number;
@@ -18,13 +18,12 @@ interface EditProps {
 }
 
 export default function Edit({ pisua }: EditProps) {
-    // Irudiaren prebisualizazioa kudeatzeko egoera lokala
     const [preview, setPreview] = useState<string | null>(
         pisua.imagen_path ? `/storage/${pisua.imagen_path}` : null
     );
 
     const { data, setData, post, processing, errors } = useForm({
-        _method: 'PUT', // GARRANTZITSUA: Fitxategiak igotzeko PUT spoofing behar da
+        _method: 'PUT',
         izena: pisua.izena || '',
         deskripzioa: pisua.deskripzioa || '',
         helbidea: pisua.helbidea || '',
@@ -33,11 +32,9 @@ export default function Edit({ pisua }: EditProps) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // 'post' erabiltzen dugu fitxategiak bidaltzeko, baina '_method: PUT' doa barruan
         post(`/pisua/${pisua.id}`);
     };
 
-    // Irudia aldatzean prebisualizazioa eguneratu
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
@@ -46,139 +43,123 @@ export default function Edit({ pisua }: EditProps) {
         }
     };
 
+    // --- ESTILOS VISUALES IDÉNTICOS A SORTU.TSX ---
+    // Input limpio con borde gris y focus azul
+    const inputClass = "w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none bg-white text-gray-700 placeholder-gray-400 transition-all";
+    // Label un poco más fino (font-medium en vez de bold)
+    const labelClass = "block text-gray-700 text-sm font-medium mb-1";
+
     return (
-        <>
+        <div className="flex flex-col min-h-screen">
             <Header />
             <Head title="Editatu Pisua" />
 
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+            {/* Fondo gris muy suave (bg-gray-50) */}
+            <main className="flex-grow flex items-center justify-center bg-gray-50 p-6">
                 
-                <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-8 border border-gray-100">
+                {/* TARJETA PRINCIPAL: BLANCA CON BORDE AZUL */}
+                {/* border-2 border-blue-400 es la clave aquí */}
+                <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border-2 border-blue-400 p-8">
                     
-                    {/* TITLE */}
-                    <h1 className="text-2xl font-bold text-center mb-8 text-gray-800 uppercase tracking-wide">
+                    {/* Título estilo formulario "GEHITU..." */}
+                    <h1 className="text-xl font-normal text-center mb-6 text-gray-700 uppercase tracking-wide">
                         EDITATU PISUA
                     </h1>
-                    
-                    <form onSubmit={handleSubmit} className="space-y-6">
+
+                    <form onSubmit={handleSubmit} className="space-y-4">
                         
-                        {/* 1. Izena */}
+                        {/* 1. IZENA */}
                         <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="izena">
-                                Izena
-                            </label>
+                            <label htmlFor="izena" className={labelClass}>Izena</label>
                             <input
                                 id="izena"
                                 type="text"
                                 value={data.izena}
-                                onChange={e => setData('izena', e.target.value)}
-                                className={`w-full px-4 py-3 border rounded-lg text-gray-700 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all ${
-                                    errors.izena ? 'border-red-500' : 'border-gray-200'
-                                }`}
-                                placeholder="Adib: Etxe Alaia"
+                                onChange={(e) => setData('izena', e.target.value)}
+                                className={inputClass}
                             />
                             {errors.izena && <p className="text-red-500 text-xs mt-1">{errors.izena}</p>}
                         </div>
 
-                        {/* 2. Deskripzioa */}
+                        {/* 2. DESKRIPZIOA */}
                         <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="deskripzioa">
-                                Deskripzioa
-                            </label>
+                            <label htmlFor="deskripzioa" className={labelClass}>Deskripzioa</label>
                             <textarea
                                 id="deskripzioa"
                                 value={data.deskripzioa}
-                                onChange={e => setData('deskripzioa', e.target.value)}
-                                className={`w-full px-4 py-3 border rounded-lg text-gray-700 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all h-24 resize-none ${
-                                    errors.deskripzioa ? 'border-red-500' : 'border-gray-200'
-                                }`}
-                                placeholder="Pisuaren deskripzio laburra..."
+                                onChange={(e) => setData('deskripzioa', e.target.value)}
+                                className={`${inputClass} h-24 resize-none`}
                             />
                             {errors.deskripzioa && <p className="text-red-500 text-xs mt-1">{errors.deskripzioa}</p>}
                         </div>
 
-                        {/* 3. Helbidea */}
+                        {/* 3. HELBIDEA */}
                         <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="helbidea">
-                                Helbidea
-                            </label>
+                            <label htmlFor="helbidea" className={labelClass}>Helbidea</label>
                             <input
                                 id="helbidea"
                                 type="text"
                                 value={data.helbidea}
-                                onChange={e => setData('helbidea', e.target.value)}
-                                className={`w-full px-4 py-3 border rounded-lg text-gray-700 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all ${
-                                    errors.helbidea ? 'border-red-500' : 'border-gray-200'
-                                }`}
-                                placeholder="Kale Nagusia 1, 2.B"
+                                onChange={(e) => setData('helbidea', e.target.value)}
+                                className={inputClass}
                             />
                             {errors.helbidea && <p className="text-red-500 text-xs mt-1">{errors.helbidea}</p>}
                         </div>
 
-                        {/* 4. Argazkia (Preview-arekin) */}
+                        {/* 4. ARGAZKIA */}
                         <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2">
-                                Argazkia
-                            </label>
+                            <label className={labelClass}>Argazkia</label>
                             
-                            {/* Prebisualizazioa */}
                             {preview && (
-                                <div className="mb-3 relative w-full h-48 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
-                                    <img 
-                                        src={preview} 
-                                        alt="Aurreikuspena" 
-                                        className="w-full h-full object-cover"
-                                    />
+                                <div className="mb-3 relative w-full h-40 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                                    <img src={preview} alt="Aurreikuspena" className="w-full h-full object-cover" />
                                 </div>
                             )}
 
-                            <div className="relative">
+                            <label className="flex items-center justify-center w-full px-4 py-2 bg-white rounded-lg border border-gray-300 shadow-sm cursor-pointer hover:bg-gray-50 text-gray-500 transition-colors">
+                                <Plus className="w-4 h-4 mr-2" />
+                                <span className="text-sm font-medium">
+                                    {data.imagen ? 'Argazkia aldatu' : 'Gehitu argazkia'}
+                                </span>
                                 <input
                                     type="file"
                                     id="imagen"
-                                    onChange={handleImageChange}
-                                    className="hidden"
+                                    name="imagen"
                                     accept="image/*"
+                                    onChange={handleImageChange}
+                                    className="hidden" 
                                 />
-                                <label 
-                                    htmlFor="imagen"
-                                    className="flex items-center justify-center w-full px-4 py-3 bg-white border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-yellow-400 hover:text-yellow-600 transition-colors group"
-                                >
-                                    <Plus className="w-5 h-5 mr-2 text-gray-400 group-hover:text-yellow-500" />
-                                    <span className="text-gray-500 group-hover:text-yellow-600 font-medium">
-                                        {data.imagen ? 'Argazkia aldatu' : 'Aldatu argazkia'}
-                                    </span>
-                                </label>
-                            </div>
+                            </label>
                             {errors.imagen && <p className="text-red-500 text-xs mt-1">{errors.imagen}</p>}
                         </div>
 
-                        {/* BUTTON */}
-                        <div className="pt-4">
+                        {/* BOTONES DE ACCIÓN: AMARILLO (Utzi) y AZUL (Gorde) */}
+                        <div className="flex items-center justify-between gap-4 pt-4 mt-6">
+                            
+                            {/* BOTÓN UTZI - Amarillo */}
+                            <Link 
+                                href="/pisua" 
+                                className="w-1/2 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-4 rounded-xl shadow-sm text-center transition-colors flex justify-center items-center gap-2"
+                            >
+                                <ArrowLeft size={18}/> Utzi
+                            </Link>
+
+                            {/* BOTÓN GORDE - Azul apagado/Indigo */}
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-200 ease-in-out transform active:scale-95 flex items-center justify-center gap-2"
+                                className="w-1/2 bg-indigo-400 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-xl shadow-sm transition-colors flex justify-center items-center gap-2 disabled:opacity-50"
                             >
-                                <Save size={20} />
-                                {processing ? 'Gordetzen...' : 'Gorde Aldaketak'}
+                                <Save size={18} />
+                                {processing ? 'Gordetzen...' : 'Gorde'}
                             </button>
                         </div>
 
-                        {/* Back Link */}
-                        <div className="text-center mt-6">
-                            <Link 
-                                href="/nire-pisuak" 
-                                className="text-sm text-gray-500 hover:text-gray-800 transition-colors"
-                            >
-                                ← Utzi eta itzuli zerrendara
-                            </Link>
-                        </div>
                     </form>
                 </div>
-            </div>
+            </main>
 
             <Footer />
-        </>
+        </div>
     );
 }
