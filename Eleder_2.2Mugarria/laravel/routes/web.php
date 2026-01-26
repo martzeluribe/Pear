@@ -45,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/users/create', [UserController::class, 'create']);    // Carga sortu.tsx (NUEVA)
     Route::post('/users', [UserController::class, 'store']);           // Acción de crear (NUEVA)
 
-});
+    Route::get('/nirepisuak', [PisoController::class, 'userDashboard'])->name('pisua.nire_pisuak');
+}); // <--- FIN DEL GRUPO (Esta es la única llave de cierre necesaria para el middleware)
 
 require __DIR__.'/settings.php';

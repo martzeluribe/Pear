@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Pisua extends Model
 {
-
     use HasFactory;
 
     protected $table = 'pisua';
@@ -17,31 +16,30 @@ class Pisua extends Model
     protected $fillable = [
         'izena',
         'kodigoa',
-        // 'dezkripzioa',
-
+        'deskripzioa',
+        'helbidea',     // <--- ¡FALTABA ESTO!
+        'imagen_path', 
         'odoo_id',
         'synced',
         'sync_error',
         'user_id',
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    /**
+     * El dueño del piso.
+     */
+    public function administrador(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    /*Pisu bakoitzak zein user dituen jakiteko.*/ 
-
-    //    // Pisuaren jabea den erabiltzailea
-    // public function owner()
-    // {
-    //     return $this->belongsTo(User::class, 'user_id');
-    // }
-
-    // // Pisuko erabiltzaileak
-    // public function users()
-    // {
-    //     return $this->belongsToMany(User::class, 'pisua_user')
-    //         ->withTimestamps();
-    // }
-
+    /**
+     * Los miembros/inquilinos del piso.
+     */
+    public function miembros(): BelongsToMany
+    {
+        // Esto está PERFECTO. Coincide con tu migración 'pisu_user' y 'pisu_id'.
+        return $this->belongsToMany(User::class, 'pisu_user', 'pisu_id', 'user_id')
+                    ->withTimestamps();
+    }
 }
