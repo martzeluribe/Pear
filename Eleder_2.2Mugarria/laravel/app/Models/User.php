@@ -19,15 +19,33 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'mota',
-        'odoo_id',
-        'synced',
-        'sync_error',
-        
+        'name',        // nombre del usuario
+        'email',       // correo
+        'password',    // contraseña
+        'mota',        // tipo de usuario
+        'odoo_id',     // ID externo (Odoo)
+        'synced',      // estado de sincronización
+        'sync_error',  // error de sincronización
     ];
+    /*User bakoitzak zein pisu dituen jakiteko.*/
+    /**
+     * Pisos donde el usuario está dentro (relación muchos a muchos)
+     */
+    // public function pisuak()
+    // {
+    //     return $this->belongsToMany(Pisua::class, 'pisua_user')
+    //                 ->withTimestamps();
+    // }
+
+    // /**
+    //  * Pisos que el usuario posee (dueño)
+    //  */
+    // public function ownedPisuak()
+    // {
+    //     return $this->hasMany(Pisua::class, 'user_id');
+    // }
+
+
 
     /**
      * The attributes that should be hidden for serialization.
