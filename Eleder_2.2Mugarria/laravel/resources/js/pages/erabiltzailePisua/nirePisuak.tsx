@@ -2,20 +2,24 @@ import React from 'react';
 import { Head, Link } from '@inertiajs/react';
 import Header from '@/Components/Header'; 
 import Footer from '@/Components/Footer';
-import { ArrowRightCircle, Plus } from 'lucide-react';
+import { ArrowRightCircle, Plus, MapPin } from 'lucide-react';
 
+// --- INTERFACES ---
 interface User {
     id: number;
     name: string;
+    email: string;
 }
 
 interface Pisua {
     id: number;
     izena: string;
     deskripzioa?: string;
+    helbidea?: string;
     imagen_path?: string;
     kodigoa: string;
-    rol_actual: 'admin' | 'kide';
+    user_id: number;
+    rol_actual?: 'admin' | 'kide';
     miembros: User[];
 }
 
@@ -23,76 +27,80 @@ interface Props {
     pisuak: Pisua[];
 }
 
+// --- PALETA DE COLORES ---
+const memberColors = [
+    'bg-pink-300 text-pink-900',
+    'bg-yellow-300 text-yellow-900',
+    'bg-orange-300 text-orange-900',
+    'bg-blue-300 text-blue-900',
+    'bg-green-300 text-green-900',
+    'bg-purple-300 text-purple-900',
+    'bg-indigo-300 text-indigo-900',
+    'bg-teal-300 text-teal-900',
+    'bg-red-300 text-red-900',
+    'bg-cyan-300 text-cyan-900',
+];
+
 export default function NirePisuak({ pisuak }: Props) {
     
-    // Función para asignar colores aleatorios a los nombres (estilo visual)
-    const getColorForName = (name: string) => {
-        const colors = [
-            'bg-pink-400 text-pink-900',
-            'bg-yellow-300 text-yellow-900',
-            'bg-orange-400 text-orange-900',
-            'bg-blue-300 text-blue-900',
-            'bg-green-300 text-green-900',
-        ];
-        // Usamos la longitud del nombre para elegir un color fijo
-        return colors[name.length % colors.length];
-    };
-
     return (
         <>
             <Header />
-            <div className="min-h-screen bg-white p-6 md:p-10">
+            <div className="min-h-screen bg-gray-50 p-6 md:p-10">
                 <Head title="Nire Pisuak" />
                 
                 <div className="max-w-6xl mx-auto">
                     
-                    {/* Título y Botón */}
+                    {/* ENCABEZADO Y BOTÓN 'SORTU' */}
                     <div className="flex justify-between items-center mb-8 border-b-2 border-red-500 pb-4">
-                        <h2 className="text-3xl font-bold flex items-center gap-3">
+                        <h2 className="text-3xl font-bold flex items-center gap-3 text-gray-800">
                             <span className="text-4xl">👥</span> Pisuak
                         </h2>
+                        
+                        {/* ENLACE MODIFICADO SEGÚN TU SOLICITUD */}
                         <Link 
-                            href="/pisua/sortu" 
-                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow flex items-center gap-2 transition-transform hover:scale-105"
+                            href={"/pisua/sortu"} 
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow flex items-center gap-2 transition-colors"
                         >
                             <Plus size={20} />
-                            Gehitu pisua
+                            Sortu Pisua
                         </Link>
                     </div>
 
-                    {/* Lista de Tarjetas */}
+                    {/* LISTA DE TARJETAS */}
                     <div className="space-y-8">
                         {pisuak.length === 0 ? (
-                            <div className="text-center py-20 bg-gray-100 rounded-xl">
+                            <div className="text-center py-20 bg-white rounded-xl shadow border border-gray-200">
                                 <p className="text-xl text-gray-500">Ez duzu pisurik oraindik.</p>
                             </div>
                         ) : (
                             pisuak.map((pisua, index) => {
-                                // Alternar colores de fondo de la tarjeta (Verde / Amarillo pastel)
-                                const cardColor = index % 2 === 0 ? 'bg-[#A8D5BA]' : 'bg-[#FCE38A]';
+                                // Alternar colores de fondo
+                                const cardColor = index % 2 === 0 ? 'bg-emerald-100' : 'bg-amber-100';
                                 
                                 return (
                                     <div key={pisua.id} className={`${cardColor} rounded-xl overflow-hidden shadow-lg flex flex-col md:flex-row min-h-[280px]`}>
                                         
                                         {/* Imagen (Izquierda) */}
-                                        <div className="md:w-5/12 relative">
+                                        <div className="md:w-5/12 relative bg-gray-200">
                                             {pisua.imagen_path ? (
                                                 <img 
                                                     src={`/storage/${pisua.imagen_path}`} 
                                                     alt={pisua.izena} 
-                                                    className="w-full h-full object-cover"
+                                                    className="w-full h-full object-cover min-h-[250px]"
+                                                    onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/400x300?text=Irudia+Falta'; }}
                                                 />
                                             ) : (
-                                                <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500 flex-col gap-2">
-                                                     <span>🏠</span>
+                                                <div className="w-full h-full flex items-center justify-center text-gray-500 flex-col gap-2 min-h-[250px]">
+                                                     <span className="text-4xl">🏠</span>
                                                      <span className="text-sm">Argazkirik ez</span>
                                                 </div>
                                             )}
                                             
-                                            {/* Etiqueta de Rol */}
+                                            {/* Etiqueta ADMIN (Si eres el dueño) */}
                                             {pisua.rol_actual === 'admin' && (
-                                                <span className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded uppercase font-bold">
-                                                    Admin
+                                                <span className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded uppercase font-bold backdrop-blur-sm">
+                                                    Nire Pisua
                                                 </span>
                                             )}
                                         </div>
@@ -100,36 +108,60 @@ export default function NirePisuak({ pisuak }: Props) {
                                         {/* Contenido (Derecha) */}
                                         <div className="md:w-7/12 p-6 flex flex-col justify-between">
                                             <div>
-                                                <h3 className="text-3xl font-bold text-gray-800 mb-2">{pisua.izena}</h3>
-                                                <p className="text-lg text-gray-800 font-medium mb-4">
+                                                <div className="flex justify-between items-start">
+                                                    <h3 className="text-3xl font-bold text-gray-800 mb-1">{pisua.izena}</h3>
+                                                </div>
+
+                                                {/* Dirección */}
+                                                {pisua.helbidea && (
+                                                    <p className="flex items-center gap-1 text-sm text-gray-600 mb-3 font-medium">
+                                                        <MapPin size={16} />
+                                                        {pisua.helbidea}
+                                                    </p>
+                                                )}
+
+                                                {/* Descripción */}
+                                                <p className="text-lg text-gray-700 leading-relaxed mb-4">
                                                     {pisua.deskripzioa || "Deskripziorik gabe"}
                                                 </p>
                                             </div>
 
-                                            <div className="flex items-end justify-between mt-4">
-                                                {/* Lista de Miembros (Pills de colores) */}
-                                                <div className="flex flex-wrap gap-2 mb-2 md:mb-0">
+                                            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mt-4 gap-4">
+                                                
+                                                {/* Lista de Miembros */}
+                                                <div className="flex flex-wrap gap-2">
                                                     {pisua.miembros.length > 0 ? (
-                                                        pisua.miembros.map(miembro => (
-                                                            <span 
-                                                                key={miembro.id}
-                                                                className={`${getColorForName(miembro.name)} px-4 py-1.5 rounded-full text-sm font-bold shadow-sm`}
-                                                            >
-                                                                {miembro.name}
-                                                            </span>
-                                                        ))
+                                                        pisua.miembros.map((miembro, idx) => {
+                                                            const isAdmin = pisua.user_id === miembro.id;
+                                                            const colorClass = memberColors[idx % memberColors.length];
+
+                                                            return (
+                                                                <span 
+                                                                    key={miembro.id}
+                                                                    className={`
+                                                                        px-3 py-1 rounded-full text-sm font-bold shadow-sm flex items-center gap-1
+                                                                        ${colorClass}
+                                                                        ${isAdmin ? 'ring-2 ring-yellow-500/50' : ''}
+                                                                    `}
+                                                                    title={isAdmin ? 'Pisoaren Administraria' : 'Kidea'}
+                                                                >
+                                                                    {isAdmin && <span>👑</span>}
+                                                                    {miembro.name}
+                                                                </span>
+                                                            );
+                                                        })
                                                     ) : (
                                                         <span className="text-sm text-gray-600 italic">Kiderik ez</span>
                                                     )}
                                                 </div>
 
-                                                {/* Botón SARTU */}
+                                                {/* Botón SARTU (Modificado también al estilo manual) */}
                                                 <Link 
-                                                    // TODO: Aquí pondremos la ruta para entrar al piso
                                                     href={`/pisua/${pisua.id}`} 
-                                                    className="bg-[#2C3E50] hover:bg-[#34495e] text-white font-bold py-2 px-6 rounded-lg shadow-lg flex items-center gap-2 transition-colors ml-4"
+                                                    className="w-full sm:w-auto text-center bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-colors"
                                                 >
                                                     SARTU
+                                                    <ArrowRightCircle size={18}/>
                                                 </Link>
                                             </div>
                                         </div>

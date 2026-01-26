@@ -19,7 +19,12 @@ return new class extends Migration
             $table->id();
             $table->string('izena');
             $table->string('kodigoa');
+            $table->text('deskripzioa')->nullable();   // Usamos 'text' porque puede ser largo
+            $table->string('helbidea')->nullable();    // Dirección
+            $table->string('imagen_path')->nullable(); // Ruta de la foto
 
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // El dueño
+            
             // Datos de Control (odoo)
             $table->unsignedBigInteger('odoo_id')->nullable();
             $table->boolean('synced')->default(false);

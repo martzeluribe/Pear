@@ -45,72 +45,100 @@ public function index(Request $request)
 
 
 public function store(Request $request)
-    {
-        // 1. Validamos los datos (incluida la imagen)
-        $validated = $request->validate([
-            'izena' => 'required|string|max:255',
-            'deskripzioa' => 'nullable|string|max:1000',
-            'helbidea' => 'nullable|string|max:255',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de foto
-        ]);
+{
+    // 1. Validamos los datos (incluida la imagen)
+    $validated = $request->validate([
+        'izena' => 'required|string|max:255',
+        'deskripzioa' => 'nullable|string|max:1000',
+        'helbidea' => 'nullable|string|max:255',
+        // HE CAMBIADO ESTO: de 2048 a 10240 (10MB) para que no falle tu imagen de IA
+        'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', 
+    ]);
 
-        // 2. Procesar la imagen si existe
-        $imagenPath = null;
-        if ($request->hasFile('imagen')) {
-            // Guarda la foto en la carpeta 'storage/app/public/pisuak'
-            $imagenPath = $request->file('imagen')->store('pisuak', 'public');
-        }
-
-        // 3. Crear el piso en la base de datos
-        $pisua = Pisua::create([
-            'izena' => $validated['izena'],
-            'deskripzioa' => $validated['deskripzioa'] ?? null,
-            'kodigoa' => \Illuminate\Support\Str::random(10), // Código único
-            'user_id' => Auth::id(), // Tú eres el dueño
-            'imagen_path' => $imagenPath, // Guardamos la ruta de la foto
-        ]);
-
-        // 4. IMPORTANTE: Añadirte a ti mismo como miembro en la tabla pivote
-        $pisua->miembros()->attach(Auth::id());
-
-        // 5. Redirigir a "Mis Pisos"
-        return redirect()->route('pisua.nire_pisuak');
+    // 2. Procesar la imagen si existe
+    $imagenPath = null;
+    if ($request->hasFile('imagen')) {
+        // Guarda la foto en la carpeta 'storage/app/public/pisuak'
+        $imagenPath = $request->file('imagen')->store('pisuak', 'public');
     }
 
-    public function edit(Pisua $pisua)
+    // 3. Crear el piso en la base de datos
+    $pisua = Pisua::create([
+        'izena' => $validated['izena'],
+        'deskripzioa' => $validated['deskripzioa'] ?? null,
+        
+        // --- ¡AQUÍ ESTABA EL PROBLEMA! ---
+        // Faltaba esta línea, por eso no se guardaba la dirección:
+        'helbidea' => $validated['helbidea'] ?? null,
+        // ---------------------------------
+
+        'kodigoa' => \Illuminate\Support\Str::random(10), // Código único
+        'user_id' => Auth::id(), // Tú eres el dueño
+        'imagen_path' => $imagenPath, // Guardamos la ruta de la foto
+    ]);
+
+    // 4. IMPORTANTE: Añadirte a ti mismo como miembro en la tabla pivote
+    $pisua->miembros()->attach(Auth::id());
+
+    // 5. Redirigir a "Mis Pisos"
+    return redirect()->route('pisua.nire_pisuak');
+}    public function edit(Pisua $pisua)
     {
         return Inertia::render('pisua/edit',compact('pisua'));
     }
 
-    public function update(Request $request, Pisua $pisua)
+
+    
+public function update(Request $request, $id)
     {
+        // 1. Bilatu pisua
+        $pisua = Pisua::findOrFail($id);
+
+        // Ziurtatu erabiltzailea jabea dela (segurtasuna)
+        if ($pisua->user_id !== Auth::id()) {
+            abort(403, 'Ez daukazu baimenik pisu hau editatzeko.');
+        }
+
+        // 2. Balidazioa (Sortu funtzioan bezala, baina irudia 'nullable' da)
         $validated = $request->validate([
-
-            'pisuaren_izena' => 'required|string|max:255',
-            'pisuaren_kodigoa' => 'required|string|max:255',
-        
+            'izena' => 'required|string|max:255',
+            'deskripzioa' => 'nullable|string|max:1000',
+            'helbidea' => 'nullable|string|max:255',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', // 10MB
         ]);
-        
+
+        // 3. Irudiaren kudeaketa
+        if ($request->hasFile('imagen')) {
+            // A) Irudi zaharra badu, ezabatu diskotik
+            if ($pisua->imagen_path && Storage::disk('public')->exists($pisua->imagen_path)) {
+                Storage::disk('public')->delete($pisua->imagen_path);
+            }
+            // B) Irudi berria igo
+            $pisua->imagen_path = $request->file('imagen')->store('pisuak', 'public');
+        }
+
+        // 4. Datuak eguneratu
         $pisua->update([
-            'izena' => $validated['pisuaren_izena'],
-            'kodigoa' => $validated['pisuaren_kodigoa'],
-            'synced' => false,
-
+            'izena' => $validated['izena'],
+            'deskripzioa' => $validated['deskripzioa'] ?? null,
+            'helbidea' => $validated['helbidea'] ?? null,
+            // 'kodigoa' ez dugu ukitzen, hori ez da aldatu behar normalean
+            // 'imagen_path' jada eguneratu dugu goian baldintza barruan
         ]);
 
-        SyncEditPisuaToOdoo::dispatch($pisua);
-
-        return redirect()->route('pisua.index');
+        return redirect()->route('pisua.nire_pisuak')->with('success', 'Pisua ondo eguneratu da!');
     }
 
-    public function destroy(\App\Models\Pisua $pisua)
-    {
+public function destroy(\App\Models\Pisua $pisua)
+{
         // 1. Borramos el piso
         $pisua->delete();
 
         // 2. Redirigimos a la lista
         return to_route('pisua.index');
-    }
+}
+
+
 
 
 public function userDashboard()

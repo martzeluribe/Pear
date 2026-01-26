@@ -11,14 +11,14 @@ class Pisua extends Model
 {
     use HasFactory;
 
-    // MANTENIDO: Forzamos que la tabla sea singular
     protected $table = 'pisua';
 
     protected $fillable = [
         'izena',
         'kodigoa',
-        'deskripzioa', // Corregido: 's' en vez de 'z'
-        'imagen_path', // Añadido para la imagen
+        'deskripzioa',
+        'helbidea',     // <--- ¡FALTABA ESTO!
+        'imagen_path', 
         'odoo_id',
         'synced',
         'sync_error',
@@ -38,6 +38,7 @@ class Pisua extends Model
      */
     public function miembros(): BelongsToMany
     {
+        // Esto está PERFECTO. Coincide con tu migración 'pisu_user' y 'pisu_id'.
         return $this->belongsToMany(User::class, 'pisu_user', 'pisu_id', 'user_id')
                     ->withTimestamps();
     }
