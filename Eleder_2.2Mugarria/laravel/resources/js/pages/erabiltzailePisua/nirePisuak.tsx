@@ -20,14 +20,14 @@ interface Pisua {
     kodigoa: string;
     user_id: number;
     rol_actual?: 'admin' | 'kide';
-    users: User[]; // <--- CAMBIADO: Antes era 'miembros', ahora es 'users'
+    users: User[];
 }
 
 interface Props {
     pisuak: Pisua[];
 }
 
-// --- PALETA DE COLORES ---
+// --- PALETA DE COLORES PARA LOS MIEMBROS (Burbujitas pequeñas) ---
 const memberColors = [
     'bg-pink-300 text-pink-900',
     'bg-yellow-300 text-yellow-900',
@@ -35,11 +35,18 @@ const memberColors = [
     'bg-blue-300 text-blue-900',
     'bg-green-300 text-green-900',
     'bg-purple-300 text-purple-900',
-    'bg-indigo-300 text-indigo-900',
-    'bg-teal-300 text-teal-900',
-    'bg-red-300 text-red-900',
-    'bg-cyan-300 text-cyan-900',
 ];
+
+// --- NUEVA: PALETA DE COLORES PARA LAS TARJETAS DE PISO ---
+const cardBackgroundColors = [
+    'bg-emerald-100', // Verde suave (el original)
+    'bg-amber-100',   // Ámbar suave (el original)
+    'bg-blue-100',    // Azul suave
+    'bg-rose-100',    // Rosa suave
+    'bg-indigo-100',  // Índigo suave
+    'bg-teal-100',    // Verde azulado suave
+];
+
 
 export default function NirePisuak({ pisuak }: Props) {
     
@@ -74,11 +81,11 @@ export default function NirePisuak({ pisuak }: Props) {
                             </div>
                         ) : (
                             pisuak.map((pisua, index) => {
-                                // Alternar colores de fondo
-                                const cardColor = index % 2 === 0 ? 'bg-emerald-100' : 'bg-amber-100';
+                                // CAMBIO AQUÍ: Usamos la nueva paleta rotativa
+                                const cardColor = cardBackgroundColors[index % cardBackgroundColors.length];
                                 
                                 return (
-                                    <div key={pisua.id} className={`${cardColor} rounded-xl overflow-hidden shadow-lg flex flex-col md:flex-row min-h-[280px]`}>
+                                    <div key={pisua.id} className={`${cardColor} rounded-xl overflow-hidden shadow-lg flex flex-col md:flex-row min-h-[280px] transition-transform hover:scale-[1.01]`}>
                                         
                                         {/* Imagen (Izquierda) */}
                                         <div className="md:w-5/12 relative bg-gray-200">
@@ -120,16 +127,15 @@ export default function NirePisuak({ pisuak }: Props) {
                                                 )}
 
                                                 {/* Descripción */}
-                                                <p className="text-lg text-gray-700 leading-relaxed mb-4">
+                                                <p className="text-lg text-gray-700 leading-relaxed mb-4 line-clamp-3">
                                                     {pisua.deskripzioa || "Deskripziorik gabe"}
                                                 </p>
                                             </div>
 
                                             <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mt-4 gap-4">
                                                 
-                                                {/* Lista de Miembros (CORREGIDO) */}
+                                                {/* Lista de Miembros */}
                                                 <div className="flex flex-wrap gap-2">
-                                                    {/* Usamos pisua.users en lugar de pisua.miembros */}
                                                     {pisua.users && pisua.users.length > 0 ? (
                                                         pisua.users.map((miembro, idx) => {
                                                             const isAdmin = pisua.user_id === miembro.id;
