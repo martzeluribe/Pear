@@ -6,6 +6,7 @@ use Laravel\Fortify\Features;
 use App\Http\Controllers\PisoController;
 use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\ZereginController; // Inportazio hau ezinbestekoa da
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
@@ -16,24 +17,37 @@ Route::get('/', function () {
 // INICIO DEL GRUPO PROTEGIDO (Solo usuarios logueados)
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // --- Rutas de Pisos ---
+    // --- PISUA ---
+    Route::get('/pisua/sortu', [PisoController::class, 'create'])->name('pisua.sortu');
     
-    // Crear (Formulario y Guardar)
-    Route::get('/pisua/sortu', [PisoController::class, 'create'])->name('pisua.create');
+    // OHARRA: 'pisua.index' izena bi aldiz zenuen. Bat bakarrik utzi dut
+    // gatazkarik ez sortzeko route() erabiltzean.
+    Route::get('/pisua/erakutsi', [PisoController::class, 'index'])->name('pisua.index');
     Route::post('/pisua', [PisoController::class, 'store'])->name('pisua.store');
     
-    // Listar (Index)
-    Route::get('/pisua', [PisoController::class, 'index'])->name('pisua.index');
-    
-    // Editar y Actualizar
     Route::get('pisua/{pisua}/edit', [PisoController::class, 'edit'])->name('pisua.edit');
     Route::put('pisua/{pisua}', [PisoController::class, 'update'])->name('pisua.update');
 
     // Borrar (La nueva ruta)
     Route::delete('/pisua/{pisua}', [PisoController::class, 'destroy'])->name('pisua.destroy');
 
+    // --- ZEREGINAK ---
+    // React fitxategian (Index.tsx) erabiltzen dituzun 'route()' deiekin bat datoz:
+    
+    // 1. Zerrenda ikusi
+    Route::get('/zereginak', [ZereginController::class, 'index'])->name('zereginak.index');
+    
+    // 2. Sortu (Gorde)
+    Route::post('/zereginak', [ZereginController::class, 'store'])->name('zereginak.store');
+    
+    // 3. Eguneratu (Adibidez: eginda markatzeko)
+    Route::put('/zereginak/{id}', [ZereginController::class, 'update'])->name('zereginak.update');
+    
+    // 4. Ezabatu
+    Route::delete('/zereginak/{id}', [ZereginController::class, 'destroy'])->name('zereginak.destroy');
 
-    // --- Dashboard ---
+
+    // --- DASHBOARD ---
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
