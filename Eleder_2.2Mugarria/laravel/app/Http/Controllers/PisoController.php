@@ -16,27 +16,26 @@ use Illuminate\Support\Str;
 
 class PisoController extends Controller
 {
-    public function index()
-    {
-        $userId = auth()->id();
+public function index(Request $request)
+{
+    $query = Pisua::query();
 
-        $pisuak = Pisua::query()
-            // 1. Soy el dueño (creador)
-            ->where('user_id', $userId)
-            // 2. O soy miembro (estoy en la lista de usuarios)
-            ->orWhereHas('users', function($query) use ($userId) {
-                // IMPORTANTE: Ponemos 'users.id' para evitar errores de ambigüedad
-                $query->where('users.id', $userId);
-            })
-            // 3. Cargamos la relación para poder mostrar los avatares en el frontend
-            ->with('users')
-            ->get();
-
-        return Inertia::render('Pisua/Index', [
-            'pisuak' => $pisuak
-        ]);
+    // Lógica de búsqueda
+    if ($request->has('search')) {
+        $search = $request->search;
+        $type = $request->input('type', 'izena'); // Por defecto busca por nombre
+        
+        $query->where($type, 'LIKE', "%{$search}%");
     }
 
+    $pisuak = $query->get();
+
+    return Inertia::render('pisua/erakutsi', [ // Ruta correcta con Mayúsculas
+        'pisuak' => $pisuak,
+        // ESTO ES LO IMPORTANTE PARA QUE NO FALLE EL FILTRO:
+        'filters' => $request->only(['search', 'type']), 
+    ]);
+}
     public function create()
     {
         return Inertia::render('pisua/sortu');

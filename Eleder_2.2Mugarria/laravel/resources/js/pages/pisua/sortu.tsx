@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useForm, Head, Link } from '@inertiajs/react';
+import { useForm, Head } from '@inertiajs/react'; // Link ya no es estrictamente necesario aquí, pero se puede dejar
 import Header from '@/Components/Header'; 
-import Footer from '@/components/footer';
-import { Plus, Save, ArrowLeft } from 'lucide-react';
+import Footer from '@/Components/Footer'; // Nota: he corregido 'footer' a 'Footer' por convención
+import { Plus } from 'lucide-react';
 
 export default function Sortu() {
     const [preview, setPreview] = useState<string | null>(null);
@@ -27,23 +27,24 @@ export default function Sortu() {
         }
     };
 
-    // Estilos basados en tu captura de imagen (image_e3f981.png)
+    // Estilos basados en tu captura de imagen
     const inputClass = "w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none bg-white text-gray-700 placeholder-gray-400 transition-all";
-    const labelClass = "block text-gray-700 text-sm font-medium mb-1"; // Labels un poco más finos como en la foto
+    const labelClass = "block text-gray-700 text-sm font-medium mb-1"; 
+
+    // Función para volver atrás
+    const handleBack = () => {
+        window.history.back();
+    };
 
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
             <Head title="Sortu Pisua" />
 
-            {/* Fondo gris muy suave para que resalte la tarjeta blanca */}
             <main className="flex-grow flex items-center justify-center bg-gray-50 p-6">
                 
-                {/* TARJETA PRINCIPAL: ESTILO EXACTO DE LA FOTO */}
-                {/* bg-white, borde azul (border-blue-400), esquinas redondeadas (rounded-2xl) */}
                 <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border-2 border-blue-400 p-8">
                     
-                    {/* Título estilo formulario "GEHITU..." */}
                     <h1 className="text-xl font-normal text-center mb-6 text-gray-700 uppercase tracking-wide">
                         SORTU PISUA
                     </h1>
@@ -116,18 +117,19 @@ export default function Sortu() {
                             {errors.imagen && <p className="text-red-500 text-xs mt-1">{errors.imagen}</p>}
                         </div>
 
-                        {/* BOTONES DE ACCIÓN: Estilo amarillo y azul apagado */}
+                        {/* BOTONES DE ACCIÓN */}
                         <div className="flex items-center justify-between gap-4 pt-4 mt-6">
                             
-                            {/* BOTÓN UTZI (Amarillo como en la foto) */}
-                            <Link 
-                                href="/pisua" 
+                            {/* BOTÓN UTZI - MODIFICADO */}
+                            <button 
+                                type="button" // IMPORTANTE: para que no haga submit
+                                onClick={handleBack}
                                 className="w-1/2 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-4 rounded-xl shadow-sm text-center transition-colors"
                             >
                                 Utzi
-                            </Link>
+                            </button>
 
-                            {/* BOTÓN SORTU (Azul grisáceo/Indigo suave como en la foto) */}
+                            {/* BOTÓN SORTU */}
                             <button
                                 type="submit"
                                 disabled={processing}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useForm, Link, Head } from '@inertiajs/react';
+import { useForm, Head } from '@inertiajs/react';
 import Header from '@/Components/Header'; 
-import Footer from '@/components/footer';
+import Footer from '@/Components/Footer'; // Asegúrate de que la ruta sea correcta (mayúsculas/minúsculas)
 import { Plus, Save, ArrowLeft } from 'lucide-react';
 
 interface Pisua {
@@ -43,10 +43,13 @@ export default function Edit({ pisua }: EditProps) {
         }
     };
 
-    // --- ESTILOS VISUALES IDÉNTICOS A SORTU.TSX ---
-    // Input limpio con borde gris y focus azul
+    // Función para volver atrás en el historial
+    const handleBack = () => {
+        window.history.back();
+    };
+
+    // --- ESTILOS VISUALES ---
     const inputClass = "w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none bg-white text-gray-700 placeholder-gray-400 transition-all";
-    // Label un poco más fino (font-medium en vez de bold)
     const labelClass = "block text-gray-700 text-sm font-medium mb-1";
 
     return (
@@ -54,14 +57,10 @@ export default function Edit({ pisua }: EditProps) {
             <Header />
             <Head title="Editatu Pisua" />
 
-            {/* Fondo gris muy suave (bg-gray-50) */}
             <main className="flex-grow flex items-center justify-center bg-gray-50 p-6">
                 
-                {/* TARJETA PRINCIPAL: BLANCA CON BORDE AZUL */}
-                {/* border-2 border-blue-400 es la clave aquí */}
                 <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border-2 border-blue-400 p-8">
                     
-                    {/* Título estilo formulario "GEHITU..." */}
                     <h1 className="text-xl font-normal text-center mb-6 text-gray-700 uppercase tracking-wide">
                         EDITATU PISUA
                     </h1>
@@ -133,18 +132,19 @@ export default function Edit({ pisua }: EditProps) {
                             {errors.imagen && <p className="text-red-500 text-xs mt-1">{errors.imagen}</p>}
                         </div>
 
-                        {/* BOTONES DE ACCIÓN: AMARILLO (Utzi) y AZUL (Gorde) */}
+                        {/* BOTONES DE ACCIÓN */}
                         <div className="flex items-center justify-between gap-4 pt-4 mt-6">
                             
-                            {/* BOTÓN UTZI - Amarillo */}
-                            <Link 
-                                href="/pisua" 
+                            {/* BOTÓN UTZI - CAMBIADO A BACK */}
+                            <button 
+                                type="button" // IMPORTANTE: type="button" para no enviar form
+                                onClick={handleBack}
                                 className="w-1/2 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-4 rounded-xl shadow-sm text-center transition-colors flex justify-center items-center gap-2"
                             >
                                 <ArrowLeft size={18}/> Utzi
-                            </Link>
+                            </button>
 
-                            {/* BOTÓN GORDE - Azul apagado/Indigo */}
+                            {/* BOTÓN GORDE */}
                             <button
                                 type="submit"
                                 disabled={processing}

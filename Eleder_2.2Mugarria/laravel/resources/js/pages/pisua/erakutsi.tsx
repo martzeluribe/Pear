@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import Header from '@/Components/Header'; 
-import Footer from '@/components/footer';
+import Footer from '@/Components/Footer'; // Asegúrate que tu archivo se llame Footer.tsx (Mayúscula)
 import { Search, Trash2, Plus, SquarePen, Hash, Calendar, User, Clock, Filter } from 'lucide-react';
 
+// Interfaces
 interface Filters {
     search?: string;
     type?: string; 
@@ -20,13 +21,14 @@ interface PisuaLocal {
 
 interface Props {
     pisuak: PisuaLocal[];
-    filters: Filters;
+    filters?: Filters; // Hacemos esto opcional para evitar errores
 }
 
-export default function Erakutsi({ pisuak, filters }: Props) {
+export default function Erakutsi({ pisuak = [], filters = {} }: Props) {
     
-    const [search, setSearch] = useState(filters.search || '');
-    const [searchType, setSearchType] = useState(filters.type || 'izena');
+    // SEGURIDAD: Usamos 'filters?.search' y valores por defecto por si filters viene vacío
+    const [search, setSearch] = useState(filters?.search || '');
+    const [searchType, setSearchType] = useState(filters?.type || 'izena');
     
     const isMounted = useRef(false);
 
@@ -41,11 +43,12 @@ export default function Erakutsi({ pisuak, filters }: Props) {
         });
     };
 
+    // Efecto para la búsqueda automática (Debounce)
     useEffect(() => {
         if (isMounted.current) {
             const delayDebounceFn = setTimeout(() => {
                 router.get(
-                    '/pisua',
+                    '/pisua', // Asegúrate de que esta ruta en web.php apunte a este controlador
                     { 
                         search: search,
                         type: searchType
@@ -88,7 +91,6 @@ export default function Erakutsi({ pisuak, filters }: Props) {
                     {/* CABECERA */}
                     <div className="flex flex-col lg:flex-row justify-between items-end lg:items-center mb-6 gap-4">
                         
-                        {/* CAMBIO AQUÍ: Aumentado a text-3xl y font-bold */}
                         <h2 className="text-3xl font-bold text-gray-800 w-full lg:w-auto">Pisuak</h2>
                         
                         <div className="flex items-end gap-4 w-full lg:w-auto justify-end">
@@ -127,7 +129,7 @@ export default function Erakutsi({ pisuak, filters }: Props) {
                             </div>
 
                             <Link 
-                                href={"/pisua/sortu"} 
+                                href="/pisua/sortu" // Asegúrate de que esta URL coincida con tu web.php
                                 className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg shadow-md flex items-center gap-2 transition-colors h-10 mb-[1px]" 
                             >
                                 <Plus size={20} />
@@ -138,12 +140,14 @@ export default function Erakutsi({ pisuak, filters }: Props) {
 
                     {/* LISTADO DE PISOS */}
                     <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
-                        {pisuak.length === 0 ? (
+                        {/* SEGURIDAD: Verificamos pisuak?.length por si es undefined */}
+                        {pisuak?.length === 0 ? (
                             <div className="text-center py-10 text-gray-500">
                                 {search ? `Ez da emaitzarik aurkitu "${searchType}" eremuan.` : 'Ez dago pisurik.'}
                             </div>
                         ) : (
-                            pisuak.map((pisua) => (
+                            // SEGURIDAD: Usamos el operador ?. por si acaso
+                            pisuak?.map((pisua) => (
                                 <div 
                                     key={pisua.id} 
                                     className="bg-white/70 hover:bg-white transition flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 p-5 rounded-xl shadow-sm border border-gray-200"
