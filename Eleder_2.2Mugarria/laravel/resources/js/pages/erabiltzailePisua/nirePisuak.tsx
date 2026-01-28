@@ -39,8 +39,8 @@ const memberColors = [
 
 // --- NUEVA: PALETA DE COLORES PARA LAS TARJETAS DE PISO ---
 const cardBackgroundColors = [
-    'bg-emerald-100', // Verde suave (el original)
-    'bg-amber-100',   // Ámbar suave (el original)
+    'bg-emerald-100', // Verde suave
+    'bg-amber-100',   // Ámbar suave
     'bg-blue-100',    // Azul suave
     'bg-rose-100',    // Rosa suave
     'bg-indigo-100',  // Índigo suave
@@ -81,23 +81,25 @@ export default function NirePisuak({ pisuak }: Props) {
                             </div>
                         ) : (
                             pisuak.map((pisua, index) => {
-                                // CAMBIO AQUÍ: Usamos la nueva paleta rotativa
+                                // Usamos la paleta rotativa
                                 const cardColor = cardBackgroundColors[index % cardBackgroundColors.length];
                                 
                                 return (
                                     <div key={pisua.id} className={`${cardColor} rounded-xl overflow-hidden shadow-lg flex flex-col md:flex-row min-h-[280px] transition-transform hover:scale-[1.01]`}>
                                         
-                                        {/* Imagen (Izquierda) */}
-                                        <div className="md:w-5/12 relative bg-gray-200">
+                                        {/* --- IMAGEN (Izquierda) --- */}
+                                        {/* AÑADIDO: h-64 para móvil, md:h-auto para escritorio y shrink-0 para que no se aplaste */}
+                                        <div className="w-full md:w-5/12 h-64 md:h-auto relative bg-gray-200 shrink-0">
                                             {pisua.imagen_path ? (
                                                 <img 
                                                     src={`/storage/${pisua.imagen_path}`} 
                                                     alt={pisua.izena} 
-                                                    className="w-full h-full object-cover min-h-[250px]"
+                                                    // AÑADIDO: w-full h-full object-cover llena el contenedor sin deformar
+                                                    className="w-full h-full object-cover"
                                                     onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/400x300?text=Irudia+Falta'; }}
                                                 />
                                             ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-500 flex-col gap-2 min-h-[250px]">
+                                                <div className="w-full h-full flex items-center justify-center text-gray-500 flex-col gap-2">
                                                      <span className="text-4xl">🏠</span>
                                                      <span className="text-sm">Argazkirik ez</span>
                                                 </div>
@@ -111,7 +113,7 @@ export default function NirePisuak({ pisuak }: Props) {
                                             )}
                                         </div>
 
-                                        {/* Contenido (Derecha) */}
+                                        {/* --- CONTENIDO (Derecha) --- */}
                                         <div className="md:w-7/12 p-6 flex flex-col justify-between">
                                             <div>
                                                 <div className="flex justify-between items-start">
