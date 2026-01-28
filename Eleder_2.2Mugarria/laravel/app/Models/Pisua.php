@@ -17,7 +17,7 @@ class Pisua extends Model
         'izena',
         'kodigoa',
         'deskripzioa',
-        'helbidea',     // <--- ¡FALTABA ESTO!
+        'helbidea',
         'imagen_path', 
         'odoo_id',
         'synced',
@@ -35,10 +35,12 @@ class Pisua extends Model
 
     /**
      * Los miembros/inquilinos del piso.
+     * IMPORTANTE: Le cambiamos el nombre de 'miembros' a 'users'
+     * para que coincida con el Controlador y con React.
      */
-    public function miembros(): BelongsToMany
+    public function users(): BelongsToMany
     {
-        // Esto está PERFECTO. Coincide con tu migración 'pisu_user' y 'pisu_id'.
+        // La lógica interna estaba perfecta, solo cambiamos el nombre de la función
         return $this->belongsToMany(User::class, 'pisu_user', 'pisu_id', 'user_id')
                     ->withTimestamps();
     }

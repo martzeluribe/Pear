@@ -15,30 +15,29 @@ use Illuminate\Support\Facades\Storage; // <-- Para la imagen
 class PisoController extends Controller
 {
 
-public function index(Request $request)
+public function index()
 {
-    $query = Pisua::query();
+    $userId = auth()->id();
 
-    if ($request->has('search')) {
-        $search = $request->input('search');
-        // Usamos el parametro 'type' o por defecto 'izena'
-        $type = $request->input('type', 'izena'); 
-        
-        // Mapeo seguro para evitar inyecciones de SQL si alguien manipula la URL
-        $allowedColumns = ['izena', 'kodigoa', 'user_id'];
-        
-        if (in_array($type, $allowedColumns)) {
-            $query->where($type, 'like', '%' . $search . '%');
-        }
-    }
+    $pisuak = \App\Models\Pisua::query()
+        // 1. Soy el dueño (creador)
+        ->where('user_id', $userId)
+        // 2. O soy miembro (estoy en la lista de usuarios)
+        ->orWhereHas('users', function($query) use ($userId) {
+            // IMPORTANTE: Ponemos 'users.id' para evitar errores de ambigüedad
+            // con la columna 'user_id' de la tabla pivote.
+            $query->where('users.id', $userId);
+        })
+        // 3. Cargamos la relación para poder mostrar los avatares en el frontend
+        ->with('users')
+        ->get();
 
-    $pisuak = $query->get();
-
-    return Inertia::render('pisua/erakutsi', [
-        'pisuak' => $pisuak,
-        'filters' => $request->only(['search', 'type']), // Pasamos 'type' de vuelta
+    return Inertia::render('Pisua/Index', [
+        'pisuak' => $pisuak
     ]);
-}    public function create()
+}
+
+public function create()
     {
         return Inertia::render('pisua/sortu');
     }
@@ -142,34 +141,74 @@ public function destroy(\App\Models\Pisua $pisua)
 
 
 public function userDashboard()
+    {
+        $user = auth()->user();
+
+        // 1. Pisos donde eres ADMINISTRADOR (dueño)
+        // Asegúrate de cambiar aquí también si tenías 'miembros'
+        $adminPisuak = $user->pisosAdministrados()
+            ->with('users') // <--- ANTES ERA 'miembros', AHORA ES 'users'
+            ->get()
+            ->map(function ($pisua) {
+                $pisua->rol_actual = 'admin';
+                return $pisua;
+            });
+
+        // 2. Pisos donde eres MIEMBRO (estás invitado)
+        $kidePisuak = $user->pisosComoMiembro()
+            ->with('users') // <--- AQUÍ ESTABA EL ERROR (línea 160 aprox)
+            ->get()
+            ->map(function ($pisua) {
+                $pisua->rol_actual = 'kide';
+                return $pisua;
+            });
+
+        // 3. Juntamos las dos listas
+        $pisuak = $adminPisuak->merge($kidePisuak)->unique('id')->values();
+
+        return Inertia::render('erabiltzailePisua/nirePisuak', [
+            'pisuak' => $pisuak
+        ]);
+    }
+    
+// En PisoController.php
+
+// 1. Modifica la función show existente:
+public function show($id)
 {
-    $user = Auth::user();
+    $pisua = \App\Models\Pisua::with('users')->findOrFail($id);
+    
+    // LOGICA NUEVA:
+    // Comprobamos si el ID del usuario conectado coincide con el 'user_id' (dueño) del piso
+    $isAdmin = auth()->id() === $pisua->user_id; 
 
-    // 1. Pisos que TU administras (eres el creador)
-    // Usamos 'with' para traer también la lista de miembros y pintarlos luego
-    $adminPisuak = \App\Models\Pisua::where('user_id', $user->id)
-        ->with('miembros') 
-        ->get()
-        ->map(function ($pisua) {
-            $pisua->rol_actual = 'admin'; // Le ponemos una etiqueta para saber que mandas tú
-            return $pisua;
-        });
-
-    // 2. Pisos donde eres MIEMBRO (estás invitado)
-    $kidePisuak = $user->pisosComoMiembro()
-        ->with('miembros')
-        ->get()
-        ->map(function ($pisua) {
-            $pisua->rol_actual = 'kide'; // Etiqueta de "solo miembro"
-            return $pisua;
-        });
-
-    // 3. Juntamos las dos listas (merge) y quitamos duplicados por si acaso
-    $pisuak = $adminPisuak->merge($kidePisuak)->unique('id')->values();
-
-    return Inertia::render('erabiltzailePisua/nirePisuak', [
-        'pisuak' => $pisuak
+    return Inertia::render('pisua/Show', [
+        'pisua' => $pisua,
+        'isAdmin' => $isAdmin // <--- Pasamos este dato a React
     ]);
+}
+
+// 2. Añade esta NUEVA función al final de la clase:
+public function addMember(Request $request, $id)
+{
+    $request->validate([
+        'email' => 'required|email|exists:users,email',
+    ], [
+        'email.exists' => 'Ez da erabiltzailerik aurkitu email horrekin.', // Mensaje en euskera si falla
+    ]);
+
+    $pisua = Pisua::findOrFail($id);
+    $user = \App\Models\User::where('email', $request->email)->first();
+
+    // Evitar duplicados
+    if ($pisua->miembros()->where('user_id', $user->id)->exists()) {
+        return back()->withErrors(['email' => 'Erabiltzaile hau jada pisukidea da.']);
+    }
+
+    // Añadir relación
+    $pisua->miembros()->attach($user->id);
+
+    return back();
 }
 }
 

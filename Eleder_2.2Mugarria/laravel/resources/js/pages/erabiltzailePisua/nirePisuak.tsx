@@ -20,7 +20,7 @@ interface Pisua {
     kodigoa: string;
     user_id: number;
     rol_actual?: 'admin' | 'kide';
-    miembros: User[];
+    users: User[]; // <--- CAMBIADO: Antes era 'miembros', ahora es 'users'
 }
 
 interface Props {
@@ -57,7 +57,6 @@ export default function NirePisuak({ pisuak }: Props) {
                             <span className="text-4xl">👥</span> Pisuak
                         </h2>
                         
-                        {/* ENLACE MODIFICADO SEGÚN TU SOLICITUD */}
                         <Link 
                             href={"/pisua/sortu"} 
                             className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow flex items-center gap-2 transition-colors"
@@ -128,10 +127,11 @@ export default function NirePisuak({ pisuak }: Props) {
 
                                             <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mt-4 gap-4">
                                                 
-                                                {/* Lista de Miembros */}
+                                                {/* Lista de Miembros (CORREGIDO) */}
                                                 <div className="flex flex-wrap gap-2">
-                                                    {pisua.miembros.length > 0 ? (
-                                                        pisua.miembros.map((miembro, idx) => {
+                                                    {/* Usamos pisua.users en lugar de pisua.miembros */}
+                                                    {pisua.users && pisua.users.length > 0 ? (
+                                                        pisua.users.map((miembro, idx) => {
                                                             const isAdmin = pisua.user_id === miembro.id;
                                                             const colorClass = memberColors[idx % memberColors.length];
 
@@ -155,7 +155,7 @@ export default function NirePisuak({ pisuak }: Props) {
                                                     )}
                                                 </div>
 
-                                                {/* Botón SARTU (Modificado también al estilo manual) */}
+                                                {/* Botón SARTU */}
                                                 <Link 
                                                     href={`/pisua/${pisua.id}`} 
                                                     className="w-full sm:w-auto text-center bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-colors"

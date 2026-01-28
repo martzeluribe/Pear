@@ -46,6 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/users', [UserController::class, 'store']);           // Acción de crear (NUEVA)
 
     Route::get('/nirepisuak', [PisoController::class, 'userDashboard'])->name('pisua.nire_pisuak');
+    Route::get('/pisua/{pisua}', [PisoController::class, 'show'])->name('pisua.show');
+    Route::post('/pisua/{pisua}/add-member', [PisoController::class, 'addMember'])->name('pisua.addMember');
 }); // <--- FIN DEL GRUPO (Esta es la única llave de cierre necesaria para el middleware)
 
 require __DIR__.'/settings.php';
