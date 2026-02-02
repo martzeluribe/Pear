@@ -21,11 +21,11 @@ export default function Header() {
                 {/* LINKS CONDICIONALES */}
                 {auth.user && (
                     <div className="flex items-center gap-4 text-sm font-medium border-l-2 border-white pl-6 py-1">
-                        <Link href="/" className="hover:text-blue-200">Welcome</Link>
+                        <Link href="/" className="hover:text-blue-200">Hasiera</Link>
                         
                         <span className="h-6 border-l border-white opacity-100"></span>
                         
-                        <Link href={dashboard()} className="hover:text-blue-200">Dashboard</Link>
+                        <Link href={dashboard()} className="hover:text-blue-200">Laburpena</Link>
                         
                         <span className="h-6 border-l border-white opacity-100"></span>
                         
@@ -37,7 +37,7 @@ export default function Header() {
 
                         <span className="h-6 border-l border-white opacity-100"></span>
                         
-                        <Link href="/pisua" className="hover:text-blue-200">Pisuen CRUD-a (Admin)</Link>
+                        <Link href="/pisua" className="hover:text-blue-200">Pisuak CRUD</Link>
 
                     </div>
                 )}

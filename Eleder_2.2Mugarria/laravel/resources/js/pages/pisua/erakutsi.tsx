@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import Header from '@/Components/Header'; 
-import Footer from '@/Components/Footer'; // Asegúrate que tu archivo se llame Footer.tsx (Mayúscula)
+import Footer from '@/components/footer'; // Asegúrate que tu archivo se llame Footer.tsx (Mayúscula)
 import { Search, Trash2, Plus, SquarePen, Hash, Calendar, User, Clock, Filter } from 'lucide-react';
 
 // Interfaces
@@ -154,10 +154,12 @@ export default function Erakutsi({ pisuak = [], filters = {} }: Props) {
                                 >
                                     <div className="flex-1 w-full">
                                         <div className="flex items-center gap-2 mb-4">
-                                            <span className="text-xl font-medium text-gray-800">{pisua.izena}</span>
+                                            {/* AÑADIDO: max-w-2xl, truncate y block para limitar la anchura del nombre */}
+                                            <span className="text-xl font-medium text-gray-800 max-w-2xl truncate block" title={pisua.izena}>{pisua.izena}</span>
                                         </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-base text-gray-600">
+                                        {/* AÑADIDO: max-w-4xl para limitar la anchura de los datos */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-base text-gray-600 max-w-4xl">
                                             <div className="flex items-center gap-3">
                                                 <Hash size={20} className="text-gray-400" />
                                                 <div>

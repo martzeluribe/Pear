@@ -2,7 +2,26 @@ import React from 'react';
 import { Head, Link } from '@inertiajs/react';
 import Header from '@/Components/Header'; 
 import Footer from '@/Components/Footer';
-import { ArrowRightCircle, Plus, MapPin } from 'lucide-react';
+import { ArrowRightCircle, Plus, MapPin, Image, Crown } from 'lucide-react';
+
+// --- ESTILOS PARA SCROLLBAR PERSONALIZADO ---
+const scrollbarStyle = `
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 20px;
+    border: 1px solid transparent;
+    background-clip: content-box;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(107, 114, 128, 0.8);
+  }
+`;
 
 // --- INTERFACES ---
 interface User {
@@ -27,7 +46,6 @@ interface Props {
     pisuak: Pisua[];
 }
 
-// --- PALETA DE COLORES PARA LOS MIEMBROS (Burbujitas pequeñas) ---
 const memberColors = [
     'bg-pink-300 text-pink-900',
     'bg-yellow-300 text-yellow-900',
@@ -37,14 +55,13 @@ const memberColors = [
     'bg-purple-300 text-purple-900',
 ];
 
-// --- NUEVA: PALETA DE COLORES PARA LAS TARJETAS DE PISO ---
 const cardBackgroundColors = [
-    'bg-emerald-100', // Verde suave (el original)
-    'bg-amber-100',   // Ámbar suave (el original)
-    'bg-blue-100',    // Azul suave
-    'bg-rose-100',    // Rosa suave
-    'bg-indigo-100',  // Índigo suave
-    'bg-teal-100',    // Verde azulado suave
+    'bg-emerald-100', 
+    'bg-amber-100',   
+    'bg-blue-100',    
+    'bg-rose-100',    
+    'bg-indigo-100',  
+    'bg-teal-100',    
 ];
 
 
@@ -52,16 +69,17 @@ export default function NirePisuak({ pisuak }: Props) {
     
     return (
         <>
+            <style>{scrollbarStyle}</style>
             <Header />
             <div className="min-h-screen bg-gray-50 p-6 md:p-10">
                 <Head title="Nire Pisuak" />
                 
                 <div className="max-w-6xl mx-auto">
                     
-                    {/* ENCABEZADO Y BOTÓN 'SORTU' */}
-                    <div className="flex justify-between items-center mb-8 border-b-2 border-red-500 pb-4">
+                    {/* ENCABEZADO */}
+                    <div className="flex justify-between items-center mb-8">
                         <h2 className="text-3xl font-bold flex items-center gap-3 text-gray-800">
-                            <span className="text-4xl">👥</span> Pisuak
+                            <span className="text-4xl"></span> Pisuak
                         </h2>
                         
                         <Link 
@@ -73,37 +91,37 @@ export default function NirePisuak({ pisuak }: Props) {
                         </Link>
                     </div>
 
-                    {/* LISTA DE TARJETAS */}
-                    <div className="space-y-8">
+                    {/* LISTA DE PISOS */}
+                    <div className="max-h-[750px] overflow-y-auto custom-scrollbar p-2 space-y-8 pr-4">
                         {pisuak.length === 0 ? (
                             <div className="text-center py-20 bg-white rounded-xl shadow border border-gray-200">
                                 <p className="text-xl text-gray-500">Ez duzu pisurik oraindik.</p>
                             </div>
                         ) : (
                             pisuak.map((pisua, index) => {
-                                // CAMBIO AQUÍ: Usamos la nueva paleta rotativa
                                 const cardColor = cardBackgroundColors[index % cardBackgroundColors.length];
                                 
                                 return (
-                                    <div key={pisua.id} className={`${cardColor} rounded-xl overflow-hidden shadow-lg flex flex-col md:flex-row min-h-[280px] transition-transform hover:scale-[1.01]`}>
+                                    <div key={pisua.id} className={`${cardColor} rounded-xl overflow-hidden shadow-lg flex flex-col md:flex-row transition-transform hover:scale-[1.01]
+                                        h-auto md:h-[340px]
+                                    `}>
                                         
                                         {/* Imagen (Izquierda) */}
-                                        <div className="md:w-5/12 relative bg-gray-200">
+                                        <div className="w-full md:w-5/12 relative bg-gray-200 h-64 md:h-full shrink-0">
                                             {pisua.imagen_path ? (
                                                 <img 
                                                     src={`/storage/${pisua.imagen_path}`} 
                                                     alt={pisua.izena} 
-                                                    className="w-full h-full object-cover min-h-[250px]"
+                                                    className="w-full h-full object-cover" 
                                                     onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/400x300?text=Irudia+Falta'; }}
                                                 />
                                             ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-500 flex-col gap-2 min-h-[250px]">
-                                                     <span className="text-4xl">🏠</span>
+                                                <div className="w-full h-full flex items-center justify-center text-gray-500 flex-col gap-2">
+                                                     <span className="text-4xl"><Image/></span>
                                                      <span className="text-sm">Argazkirik ez</span>
                                                 </div>
                                             )}
                                             
-                                            {/* Etiqueta ADMIN (Si eres el dueño) */}
                                             {pisua.rol_actual === 'admin' && (
                                                 <span className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded uppercase font-bold backdrop-blur-sm">
                                                     Nire Pisua
@@ -112,30 +130,38 @@ export default function NirePisuak({ pisuak }: Props) {
                                         </div>
 
                                         {/* Contenido (Derecha) */}
-                                        <div className="md:w-7/12 p-6 flex flex-col justify-between">
-                                            <div>
+                                        <div className="w-full md:w-7/12 p-6 flex flex-col justify-between h-full overflow-hidden">
+                                            
+                                            {/* Bloque Superior: Título, Dir, Desc */}
+                                            {/* 'min-w-0' es un truco de flexbox para permitir que el truncate funcione dentro de un flex child */}
+                                            <div className="min-w-0"> 
                                                 <div className="flex justify-between items-start">
-                                                    <h3 className="text-3xl font-bold text-gray-800 mb-1">{pisua.izena}</h3>
+                                                    {/* NOMBRE DEL PISO: truncate añade '...' si es muy largo */}
+                                                    <h3 className="text-3xl font-bold text-gray-800 mb-1 truncate pr-2" title={pisua.izena}>
+                                                        {pisua.izena}
+                                                    </h3>
                                                 </div>
 
-                                                {/* Dirección */}
                                                 {pisua.helbidea && (
                                                     <p className="flex items-center gap-1 text-sm text-gray-600 mb-3 font-medium">
-                                                        <MapPin size={16} />
-                                                        {pisua.helbidea}
+                                                        {/* shrink-0 evita que el icono se aplaste */}
+                                                        <MapPin size={16} className="shrink-0" />
+                                                        {/* truncate en el texto de la dirección */}
+                                                        <span className="truncate" title={pisua.helbidea}>{pisua.helbidea}</span>
                                                     </p>
                                                 )}
 
-                                                {/* Descripción */}
-                                                <p className="text-lg text-gray-700 leading-relaxed mb-4 line-clamp-3">
+                                                {/* DESCRIPCION: line-clamp-3 limita a 3 líneas y pone '...' */}
+                                                <p className="text-lg text-gray-700 leading-relaxed mb-4 line-clamp-3" title={pisua.deskripzioa || ''}>
                                                     {pisua.deskripzioa || "Deskripziorik gabe"}
                                                 </p>
                                             </div>
 
-                                            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mt-4 gap-4">
+                                            {/* Bloque Inferior: Usuarios y Botón */}
+                                            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mt-auto gap-4">
                                                 
                                                 {/* Lista de Miembros */}
-                                                <div className="flex flex-wrap gap-2">
+                                                <div className="flex flex-wrap gap-2 max-h-[85px] overflow-y-auto custom-scrollbar pr-2 w-full sm:w-auto">
                                                     {pisua.users && pisua.users.length > 0 ? (
                                                         pisua.users.map((miembro, idx) => {
                                                             const isAdmin = pisua.user_id === miembro.id;
@@ -151,7 +177,7 @@ export default function NirePisuak({ pisuak }: Props) {
                                                                     `}
                                                                     title={isAdmin ? 'Pisoaren Administraria' : 'Kidea'}
                                                                 >
-                                                                    {isAdmin && <span>👑</span>}
+                                                                    {isAdmin && <span><Crown size={14}/></span>}
                                                                     {miembro.name}
                                                                 </span>
                                                             );
@@ -161,10 +187,9 @@ export default function NirePisuak({ pisuak }: Props) {
                                                     )}
                                                 </div>
 
-                                                {/* Botón SARTU */}
                                                 <Link 
                                                     href={`/pisua/${pisua.id}`} 
-                                                    className="w-full sm:w-auto text-center bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-colors"
+                                                    className="w-full sm:w-auto text-center bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-colors shrink-0"
                                                 >
                                                     SARTU
                                                     <ArrowRightCircle size={18}/>
