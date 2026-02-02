@@ -3,6 +3,17 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--Nabigatzailean bilatzen denean:-->
+        <meta name="description" content="Pisuak kudeatzeko, informazio zeregin eta gastuen kudeaketadun web aplikazio integratua.">
+        <meta name="keywords" content="pisu, pisua, kudeaketa, kudeatu, kudeaketak, zereginak, zeregin, gastu, gastuak, informazio, informazioa, erabiltzaile, elkarbizitza, etxea, pisukideak, alokairua, antolakuntza, zerrendak, ordainketak, egoiliarrak, etxeko lanak, egutegia, egutegi, erosketak, erosketa zerrenda, garbiketa, partekatu, kontuak, dirua, bizikidetza, errenta, jabekideak">
+        <meta name="author" content="Pear taldea">
+        <!--URL partekatzen denean:-->
+        <meta property="og:title" content="{{ config('app.name') }}">
+        <meta property="og:description" content="Pisuak kudeatzeko web aplikazio integratua.">
+        <meta property="og:image" content="{{ asset('images/Welcomeirudia.png') }}">
+        <meta property="og:type" content="website">
+
+
 
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
         <script>
@@ -32,9 +43,8 @@
 
         <title inertia>{{ config('app.name', ) }}</title>
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="/Webiconhouse.png">
+        <link rel="apple-touch-icon" href="/Webiconhouse.png">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />

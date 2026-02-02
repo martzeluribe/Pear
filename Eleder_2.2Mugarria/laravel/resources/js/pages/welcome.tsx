@@ -29,9 +29,9 @@ export default function Welcome({
                 <main className="flex-grow flex flex-col items-center justify-center p-6 lg:p-12">
                     
                     {/* Imagen de la aplicación (Mockup) */}
-                    <div className="w-full max-w-4xl shadow-2xl rounded-lg overflow-hidden mb-12 border-1 border-gray-200">
+                    <div className="w-full max-w-md shadow-lg rounded-lg overflow-hidden mb-12 border border-gray-200">
                         <img 
-                            src="https://www.ikaslangipuzkoa.eus/es/centros/CIFP-miguel-altuna/@@images/8d3a9343-8f59-430c-99cf-cd8319d5a515.jpeg" 
+                            src="/Welcomeirudia.png" 
                             alt="Pisukideak App Preview" 
                             className="w-full h-auto block"
                         />
@@ -43,8 +43,11 @@ export default function Welcome({
                             DESKRIPZIOA
                         </h2>
                         <p className="text-lg text-gray-600 leading-relaxed">
-                            Aquí puedes escribir el breve texto que desees para describir tu aplicación 
-                            y cómo ayuda a los usuarios a gestionar su convivencia.
+                            <strong>Pisukideak</strong> zure etxeko bizikidetza errazteko diseinatutako web aplikazioa da. 
+                            Gure plataformarekin, pisu kideek era errazean kudeatu ditzakete eguneroko 
+                            <strong> zereginak</strong>, komunitateko <strong>gastuak</strong> kontrolatu eta 
+                            <strong> egutegi</strong> partekatuaren bidez elkarbizitza hobea lortu. 
+                            Dena leku bakarretik, antolakuntza hobetzeko eta gatazkak saihesteko.
                         </p>
                     </div>
                     
