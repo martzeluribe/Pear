@@ -5,63 +5,65 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\PisoController;
 use App\Http\Controllers\UserController;
-
 use App\Http\Controllers\ZereginController; // Inportazio hau ezinbestekoa da
 
+// --- PÁGINA DE INICIO ---
 Route::get('/', function () {
     return Inertia::render('welcome', [
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
 
-// INICIO DEL GRUPO PROTEGIDO (Solo usuarios logueados)
+// --- GRUPO PROTEGIDO (Solo usuarios logueados) ---
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // --- PISUA ---
-    Route::get('/pisua/sortu', [PisoController::class, 'create'])->name('pisua.sortu');
+    // ==========================================
+    // KUDEAKETA: PISUAK (Apartamentos)
+    // ==========================================
     
-    // OHARRA: 'pisua.index' izena bi aldiz zenuen. Bat bakarrik utzi dut
-    // gatazkarik ez sortzeko route() erabiltzean.
-    Route::get('/pisua/erakutsi', [PisoController::class, 'index'])->name('pisua.index');
+    // 1. Creación (Debe ir ANTES de las rutas con {id})
+    Route::get('/pisua/sortu', [PisoController::class, 'create'])->name('pisua.sortu');
     Route::post('/pisua', [PisoController::class, 'store'])->name('pisua.store');
     
+    // 2. Listados
+    Route::get('/pisua', [PisoController::class, 'index'])->name('pisua.index');
+    Route::get('/nirepisuak', [PisoController::class, 'userDashboard'])->name('pisua.nire_pisuak');
+
+    // 3. Acciones sobre un piso específico (Wildcards {pisua})
+    Route::get('/pisua/{pisua}', [PisoController::class, 'show'])->name('pisua.show'); // Vista principal del piso
     Route::get('pisua/{pisua}/edit', [PisoController::class, 'edit'])->name('pisua.edit');
     Route::put('pisua/{pisua}', [PisoController::class, 'update'])->name('pisua.update');
-
-    // Borrar (La nueva ruta)
     Route::delete('/pisua/{pisua}', [PisoController::class, 'destroy'])->name('pisua.destroy');
+    
+    // 4. Añadir miembro (Modal en Show.tsx)
+    Route::post('/pisua/{pisua}/add-member', [PisoController::class, 'addMember'])->name('pisua.addMember');
 
-    // --- ZEREGINAK ---
-    // React fitxategian (Index.tsx) erabiltzen dituzun 'route()' deiekin bat datoz:
+
+    // ==========================================
+    // KUDEAKETA: ZEREGINAK (Tareas)
+    // ==========================================
     
-    // 1. Zerrenda ikusi
     Route::get('/zereginak', [ZereginController::class, 'index'])->name('zereginak.index');
-    
-    // 2. Sortu (Gorde)
     Route::post('/zereginak', [ZereginController::class, 'store'])->name('zereginak.store');
-    
-    // 3. Eguneratu (Adibidez: eginda markatzeko)
-    Route::put('/zereginak/{id}', [ZereginController::class, 'update'])->name('zereginak.update');
-    
-    // 4. Ezabatu
+    Route::put('/zereginak/{id}', [ZereginController::class, 'update'])->name('zereginak.update'); // Marcar como hecha
     Route::delete('/zereginak/{id}', [ZereginController::class, 'destroy'])->name('zereginak.destroy');
 
 
-    // --- DASHBOARD ---
+    // ==========================================
+    // KUDEAKETA: ERABILTZAILEAK (Usuarios) & DASHBOARD
+    // ==========================================
+
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
     
-    Route::get('/users', [UserController::class, 'index']);           // Carga erakutsi.tsx
-    Route::get('/users/{user}/edit', [UserController::class, 'edit']); // Carga editatu.tsx
-    Route::put('/users/{user}', [UserController::class, 'update']);    // Acción de guardado
-    Route::delete('/users/{user}', [UserController::class, 'destroy']); // Acción de borrado
-    Route::get('/users/create', [UserController::class, 'create']);    // Carga sortu.tsx (NUEVA)
-    Route::post('/users', [UserController::class, 'store']);           // Acción de crear (NUEVA)
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');           
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');   
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');           
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');  
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');   
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy'); 
 
-    Route::get('/nirepisuak', [PisoController::class, 'userDashboard'])->name('pisua.nire_pisuak');
-    Route::get('/pisua/{pisua}', [PisoController::class, 'show'])->name('pisua.show');
-    Route::post('/pisua/{pisua}/add-member', [PisoController::class, 'addMember'])->name('pisua.addMember');
-}); // <--- FIN DEL GRUPO (Esta es la única llave de cierre necesaria para el middleware)
+}); 
 
 require __DIR__.'/settings.php';

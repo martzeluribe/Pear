@@ -8,21 +8,21 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('zereginak', function (Blueprint $table) {
-            $table->id(); 
-            
-            // Izenak euskaraz
-            $table->string('izenburua');      // Lehen 'titulo' edo 'zeregina'
-            $table->dateTime('muga_data');    // Lehen 'fecha_limite' edo 'eguna'
-            $table->boolean('eginda')->default(false); // Lehen 'completada'
+Schema::create('zereginak', function (Blueprint $table) {
+        $table->id(); 
+        $table->string('izenburua');
+        $table->dateTime('muga_data');
+        $table->boolean('eginda')->default(false);
 
-            // 'user_id' mantentzen dugu Laravelen estandarra delako,
-            // baina kodean 'arduraduna' bezala tratatuko dugu.
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        // --- AQUÍ ESTÁ EL CAMBIO ---
+        // Cambiamos 'pisuak' por 'pisua'
+        $table->foreignId('pisua_id')->constrained('pisua')->onDelete('cascade');
 
-            $table->timestamps();
-        });
-    }
+        // Mantenemos la de usuarios
+        $table->foreignId('arduraduna_id')->constrained('users')->onDelete('cascade');
+
+        $table->timestamps();
+    });    }
 
     public function down(): void
     {

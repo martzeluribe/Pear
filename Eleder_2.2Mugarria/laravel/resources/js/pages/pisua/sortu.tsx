@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { useForm, Head } from '@inertiajs/react'; // Link ya no es estrictamente necesario aquí, pero se puede dejar
+import { useForm, Head } from '@inertiajs/react';
 import Header from '@/Components/Header'; 
-import Footer from '@/Components/Footer'; // Nota: he corregido 'footer' a 'Footer' por convención
+import Footer from '@/Components/Footer';
 import { Plus } from 'lucide-react';
 
 export default function Sortu() {
     const [preview, setPreview] = useState<string | null>(null);
 
-    const { data, setData, post, processing, errors } = useForm({
+    // Destructuramos 'setError' y 'clearErrors' para manejar errores manuales
+    const { data, setData, post, processing, errors, setError, clearErrors } = useForm({
         izena: '',
         deskripzioa: '',
         helbidea: '',
@@ -19,19 +20,40 @@ export default function Sortu() {
         post('/pisua'); 
     };
 
+    // --- BALIDAZIO LOGIKA (EUSKERA) ---
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0];
+        const file = e.target.files?.[0];
+
+        if (file) {
+            // 1. Balidatu tamaina (5MB = 5 * 1024 * 1024 bytes)
+            const MAX_SIZE = 5 * 1024 * 1024; 
+            
+            if (file.size > MAX_SIZE) {
+                // MENSAJE EN EUSKERA
+                setError('imagen', 'Argazkia handiegia da. Gehienez 5MB onartzen da.');
+                
+                // Garbitu inputa
+                e.target.value = ''; 
+                return; 
+            }
+
+            // 2. Balidatu formatua (Segurtasun extra)
+            if (!['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(file.type)) {
+                // MENSAJE EN EUSKERA
+                setError('imagen', 'Fitxategi-mota okerra. JPG, PNG edo WEBP formatuak bakarrik.');
+                return;
+            }
+
+            // Dena ondo badago:
+            clearErrors('imagen'); // Kendu errore zaharrak
             setData('imagen', file);
             setPreview(URL.createObjectURL(file));
         }
     };
 
-    // Estilos basados en tu captura de imagen
     const inputClass = "w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none bg-white text-gray-700 placeholder-gray-400 transition-all";
     const labelClass = "block text-gray-700 text-sm font-medium mb-1"; 
 
-    // Función para volver atrás
     const handleBack = () => {
         window.history.back();
     };
@@ -92,7 +114,10 @@ export default function Sortu() {
 
                         {/* 4. ARGAZKIA */}
                         <div>
-                            <label className={labelClass}>Argazkia</label>
+                            <div className="flex justify-between items-end mb-1">
+                                <label className={labelClass}>Argazkia</label>
+                                <span className="text-xs text-gray-400 font-medium">(Max: 5MB)</span>
+                            </div>
                             
                             {preview && (
                                 <div className="mb-3 relative w-full h-40 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
@@ -100,7 +125,7 @@ export default function Sortu() {
                                 </div>
                             )}
 
-                            <label className="flex items-center justify-center w-full px-4 py-2 bg-white rounded-lg border border-gray-300 shadow-sm cursor-pointer hover:bg-gray-50 text-gray-500 transition-colors">
+                            <label className={`flex items-center justify-center w-full px-4 py-2 bg-white rounded-lg border shadow-sm cursor-pointer hover:bg-gray-50 transition-colors ${errors.imagen ? 'border-red-500 text-red-500' : 'border-gray-300 text-gray-500'}`}>
                                 <Plus className="w-4 h-4 mr-2" />
                                 <span className="text-sm font-medium">
                                     {data.imagen ? 'Argazkia aldatu' : 'Gehitu argazkia'}
@@ -114,22 +139,23 @@ export default function Sortu() {
                                     className="hidden" 
                                 />
                             </label>
-                            {errors.imagen && <p className="text-red-500 text-xs mt-1">{errors.imagen}</p>}
+                            {/* Mensaje de error (Validación frontend y backend) */}
+                            {errors.imagen && <p className="text-red-500 text-xs mt-1 font-bold">{errors.imagen}</p>}
                         </div>
 
-                        {/* BOTONES DE ACCIÓN */}
+                        {/* EKINTZA BOTOIAK */}
                         <div className="flex items-center justify-between gap-4 pt-4 mt-6">
                             
-                            {/* BOTÓN UTZI - MODIFICADO */}
+                            {/* UTZI BOTOIA */}
                             <button 
-                                type="button" // IMPORTANTE: para que no haga submit
+                                type="button" 
                                 onClick={handleBack}
                                 className="w-1/2 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-4 rounded-xl shadow-sm text-center transition-colors"
                             >
                                 Utzi
                             </button>
 
-                            {/* BOTÓN SORTU */}
+                            {/* SORTU BOTOIA */}
                             <button
                                 type="submit"
                                 disabled={processing}

@@ -13,10 +13,12 @@ class Zereginak extends Model
     protected $table = 'zereginak';
 
     protected $fillable = [
-        'izenburua',    // Euskaraz
-        'muga_data',    // Euskaraz
-        'eginda',       // Euskaraz
-        'user_id'
+        'izenburua',
+        'muga_data',
+        'eginda',
+        'pisua_id',      // <--- ¡FALTABA ESTO! Sin esto, la tarea no se asigna al piso.
+        'arduraduna_id', // <--- En React envías 'arduraduna_id', así que úsalo aquí también.
+        // 'user_id'     // Borra este si tu columna en la BD se llama 'arduraduna_id'
     ];
 
     protected $casts = [
@@ -24,9 +26,16 @@ class Zereginak extends Model
         'eginda' => 'boolean',
     ];
 
-    // Errlazioaren izena ere euskaraz: 'arduraduna'
+    // Relación con el Usuario (Arduraduna)
     public function arduraduna(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        // Asegúrate de que el segundo parámetro sea el nombre real de la columna en tu BD
+        return $this->belongsTo(User::class, 'arduraduna_id'); 
+    }
+
+    // Relación con el Piso (Opcional pero recomendada)
+    public function pisua(): BelongsTo
+    {
+        return $this->belongsTo(Pisua::class, 'pisua_id');
     }
 }
