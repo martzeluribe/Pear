@@ -17,6 +17,11 @@ export default function Dashboard() {
     return (
         <>
             <Header/>
+            <Head title="Hasiera">
+                
+            </Head>
+
+            
                 <AppLayout/> {/*<-------------Hau kendu lan egiteko*/ } 
             <Footer/>
         </>
