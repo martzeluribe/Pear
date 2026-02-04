@@ -70,29 +70,68 @@ class PisoController extends Controller
     }
 
     // --- FUNCIÓN SHOW (FUSIONADA Y CORREGIDA) ---
-    public function show(Pisua $pisua)
-    {
-        // 1. Cargar usuarios
-        $pisua->load('users');
+public function show(Pisua $pisua)
+{
+    // 1. Cargar usuarios del piso
+    $pisua->load('users');
+    
+    // 2. Cargar GASTOS (Tu lógica actual)
+    $gastuak = \App\Models\Gastuak::where('pisua_id', $pisua->id)
+        ->with(['ordaintzailea', 'partaideak']) 
+        ->orderBy('data', 'desc')
+        ->get();
 
-        // 2. Cargar tareas (Zereginak)
-        $zereginak = Zereginak::where('pisua_id', $pisua->id)
-            ->with('arduraduna')
-            ->orderBy('muga_data', 'asc')
-            ->get();
-        
-        // 3. Verificar si es admin
-        $isAdmin = auth()->id() === $pisua->user_id; 
+    // 3. --- ¡NUEVO! CARGAR TAREAS (ZEREGINAK) ---
+    // Buscamos las tareas de este piso y cargamos el nombre del responsable
+    $zereginak = Zereginak::where('pisua_id', $pisua->id)
+        ->with('arduraduna') // Para ver el nombre de quién tiene que hacerlo
+        ->orderBy('muga_data', 'asc') // Ordenadas por fecha
+        ->get();
 
-        // MANTENGO TU RUTA 'pisua/Show'
-        return Inertia::render('pisua/Show', [
-            'pisua' => $pisua,
-            'isAdmin' => $isAdmin,
-            'zereginak' => $zereginak // Pasamos las tareas
-        ]);
+    // 4. LOGICA DEL BALANCE (Tu lógica actual, sin cambios)
+    $saldoak = [];
+    foreach ($pisua->users as $user) {
+        $saldoak[$user->id] = 0;
     }
-    // ---------------------------------------------
 
+    foreach ($gastuak as $gastu) {
+        $pagadorId = $gastu->ordaintzailea_id;
+        $cantidad = $gastu->zenbatekoa;
+        $participantes = $gastu->partaideak;
+        $numParticipantes = $participantes->count();
+
+        if ($numParticipantes > 0) {
+            $cuota = $cantidad / $numParticipantes;
+            if (isset($saldoak[$pagadorId])) {
+                $saldoak[$pagadorId] += $cantidad;
+            }
+            foreach ($participantes as $participante) {
+                if (isset($saldoak[$participante->id])) {
+                    $saldoak[$participante->id] -= $cuota;
+                }
+            }
+        }
+    }
+
+    $balantzea = $pisua->users->map(function ($user) use ($saldoak) {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'saldo' => round($saldoak[$user->id] ?? 0, 2)
+        ];
+    });
+
+    // 5. DEVOLVER DATOS A INERTIA
+    return Inertia::render('pisua/Show', [
+        'pisua' => $pisua,
+        // AQUÍ ESTABA EL ERROR: Antes ponía [], ahora pasamos la variable
+        'zereginak' => $zereginak, 
+        'gastuak' => $gastuak,
+        'balantzea' => $balantzea,
+        'users' => $pisua->users,
+        'isAdmin' => Auth::id() === $pisua->user_id,
+    ]);
+}
     public function edit(Pisua $pisua)
     {
         // MANTENGO TU RUTA ORIGINAL
@@ -184,5 +223,26 @@ class PisoController extends Controller
         $pisua->users()->attach($user->id);
 
         return back();
+    }
+
+    public function removeMember($pisuaId, $memberId)
+    {
+        $pisua = Pisua::findOrFail($pisuaId);
+
+        // 1. SEGURIDAD: Solo el creador del piso (admin) puede echar a gente
+        if (auth()->id() !== $pisua->user_id) {
+            abort(403, 'Ez daukazu baimenik erabiltzaile hau kanporatzeko.');
+        }
+
+        // 2. SEGURIDAD: El admin no se puede borrar a sí mismo desde aquí
+        if ($memberId == $pisua->user_id) {
+            return back()->withErrors(['error' => 'Ezin duzu zure burua kanporatu.']);
+        }
+
+        // 3. ACCIÓN: Quitamos al usuario de la tabla pivote (pisua_user)
+        // detach() elimina la relación sin borrar al usuario de la base de datos
+        $pisua->users()->detach($memberId);
+
+        return back(); // Recargamos la página
     }
 }

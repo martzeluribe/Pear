@@ -6,6 +6,8 @@ use Laravel\Fortify\Features;
 use App\Http\Controllers\PisoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZereginController; // Inportazio hau ezinbestekoa da
+use App\Http\Controllers\GastuakController;
+use App\Http\Models\Zereginak;
 
 // --- PÁGINA DE INICIO ---
 Route::get('/', function () {
@@ -63,6 +65,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');  
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');   
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy'); 
+
+
+
+
+
+    Route::post('/gastuak', [GastuakController::class, 'store'])->name('gastuak.store');
+    Route::delete('/gastuak/{gastu}', [GastuakController::class, 'destroy'])->name('gastuak.destroy');
+    Route::delete('/pisua/{pisua}/member/{user}', [PisoController::class, 'removeMember'])->name('pisua.removeMember');
+
+
+    Route::get('/dashboard', function () {
+    $userId = auth()->id();
+    
+    // Obtenemos todas las tareas asignadas al usuario, cargando la relación 'pisua'
+    $zereginak = \App\Models\Zereginak::where('arduraduna_id', $userId)
+        ->with('pisua') // IMPORTANTE: Cargar el piso para mostrar el nombre
+        ->orderBy('muga_data', 'asc')
+        ->get();
+
+    return Inertia::render('dashboard', [
+        'zereginak' => $zereginak
+    ]);
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 }); 
 
