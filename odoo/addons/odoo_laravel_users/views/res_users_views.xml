@@ -1,14 +1,48 @@
 <odoo>
+
+    <record id="view_users_search_laravel_inherit" model="ir.ui.view">
+        <field name="name">res.users.search.laravel.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_search"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="mota" string="Rola (Laravel)"/>
+            </xpath>
+
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Rol: Admina" name="filter_admina" domain="[('mota', '=', 'admina')]"/>
+                <filter string="Rol: Erabiltzailea" name="filter_erabiltzailea" domain="[('mota', '=', 'erabiltzailea')]"/>
+                
+                <group expand="0" string="Taldekatu honela">
+                    <filter string="Rola" name="group_by_mota" context="{'group_by': 'mota'}"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+
     <record id="view_users_tree_laravel_inherit" model="ir.ui.view">
         <field name="name">res.users.tree.laravel.inherit</field>
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="before">
-                <field name="id" optional="show"/>
+            
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-bf">mota == 'admina'</attribute>
             </xpath>
+
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="id" optional="hide"/>
+            </xpath>
+
             <xpath expr="//field[@name='login']" position="after">
-                <field name="mota" optional="show"/>
+                <field name="mota" 
+                       widget="badge" 
+                       decoration-danger="mota == 'admina'" 
+                       decoration-success="mota == 'erabiltzailea'"
+                       optional="show"/>
             </xpath>
         </field>
     </record>
@@ -18,9 +52,34 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
+            
             <xpath expr="//field[@name='login']" position="after">
-                <field name="mota" widget="radio"/>
+                <field name="mota" widget="radio" options="{'horizontal': true}"/>
             </xpath>
+
         </field>
     </record>
+
+    <record id="view_users_kanban_laravel_inherit" model="ir.ui.view">
+        <field name="name">res.users.kanban.laravel.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_res_users_kanban"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='id']" position="after">
+                <field name="mota"/>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_kanban_details')]" position="inside">
+                <div class="mt-1">
+                    <field name="mota" 
+                           widget="badge" 
+                           decoration-danger="mota == 'admina'" 
+                           decoration-success="mota == 'erabiltzailea'"/>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+
 </odoo>

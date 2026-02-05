@@ -4,7 +4,7 @@
     'version': '1.0',
     'summary': 'Laravelekin integratzeko erabiltzaileen luzapena',  # Antes: Extensión de usuarios...
     'category': 'Integrazioa',                      # Antes: Integration
-    'author': 'Zure Izena',                         # Antes: Tu Nombre
+    'author': 'Pear taldea',                         # Antes: Tu Nombre
     'depends': ['base'],
     'data': [
         'security/security.xml',

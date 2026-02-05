@@ -1,0 +1,126 @@
+<odoo>
+
+    <record id="view_piso_kanban" model="ir.ui.view">
+        <field name="name">pisos.piso.kanban</field>
+        <field name="model">pisos.piso</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1">
+                <field name="name"/>
+                <field name="codigo"/>
+                <field name="admin_id"/>
+                <field name="id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('res.users', 'avatar_128', record.admin_id.raw_value)" alt="Jabea"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                <div>
+                                    <span class="badge rounded-pill text-bg-primary"><field name="codigo"/></span>
+                                </div>
+                                <div class="text-muted">
+                                    <i class="fa fa-map-marker me-1" title="Helbidea"/> <field name="direccion"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_piso_form" model="ir.ui.view">
+        <field name="name">pisos.piso.form</field>
+        <field name="model">pisos.piso</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="is_current_user_admin" invisible="1"/>
+
+                    <div class="oe_title">
+                        <label for="name" string="Etxebizitzaren Izena"/>
+                        <h1>
+                            <field name="name" placeholder="Adib: Erdiguneko Apartamentua"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="codigo" widget="badge" decoration-info="1"/>
+                            <field name="direccion" widget="char" placeholder="Adib: Kale Nagusia 1, Bilbo"/>
+                        </group>
+                        <group>
+                            <field name="admin_id" 
+                                   string="Jabea" 
+                                   widget="many2one_avatar"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   readonly="not is_current_user_admin"
+                                   force_save="1"/>
+                        </group>
+                    </group>
+                    <group string="Xehetasunak">
+                        <field name="descripcion" placeholder="Idatzi hemen etxebizitzaren ezaugarri nagusiak..."/>
+                    </group>
+                    <group string="Auditoria" groups="base.group_no_one">
+                        <field name="create_date" readonly="1" string="Sortze-data" widget="datetime"/>
+                        <field name="write_date" readonly="1" string="Azken Eguneratzea" widget="datetime"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_piso_tree" model="ir.ui.view">
+        <field name="name">pisos.piso.tree</field>
+        <field name="model">pisos.piso</field>
+        <field name="arch" type="xml">
+            <tree sample="1" decoration-info="admin_id == uid">
+                <field name="name" decoration-bf="1"/> <field name="codigo" widget="badge" decoration-success="1"/> <field name="direccion"/>
+                <field name="admin_id" widget="many2one_avatar_user"/>
+                <field name="create_date" optional="hide" widget="date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_piso_search" model="ir.ui.view">
+        <field name="name">pisos.piso.search</field>
+        <field name="model">pisos.piso</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Izena"/>
+                <field name="codigo"/>
+                <field name="direccion"/> <field name="admin_id"/>
+                
+                <filter string="Nire Etxebizitzak" name="my_pisos" domain="[('admin_id', '=', uid)]"/>
+                
+                <group expand="0" string="Taldekatu honela">
+                    <filter string="Jabea" name="group_by_admin" context="{'group_by': 'admin_id'}"/>
+                    <filter string="Sortze Data" name="group_by_createdate" context="{'group_by': 'create_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_gestion_pisos" model="ir.actions.act_window">
+        <field name="name">Etxebizitzak</field>
+        <field name="res_model">pisos.piso</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'search_default_my_pisos': 1}</field>
+    </record>
+
+    <menuitem 
+        id="menu_pisos_root" 
+        name="Etxebizitza Kudeaketa" 
+        web_icon="base,static/description/icon.png"
+        sequence="10"/>
+
+    <menuitem 
+        id="menu_pisos_list" 
+        parent="menu_pisos_root" 
+        name="Etxebizitzak Ikusi" 
+        action="action_gestion_pisos"/>
+
+</odoo>
