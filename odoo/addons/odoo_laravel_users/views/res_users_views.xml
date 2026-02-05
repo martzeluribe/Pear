@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_users_tree_laravel_inherit" model="ir.ui.view">
+        <field name="name">res.users.tree.laravel.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="id" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='login']" position="after">
+                <field name="mota" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_users_form_laravel_inherit" model="ir.ui.view">
+        <field name="name">res.users.form.laravel.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='login']" position="after">
+                <field name="mota" widget="radio"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -11,6 +11,7 @@ import { LogIn, House, User, LogOut } from 'lucide-react';
 export default function Header() {
 
     const { auth } = usePage().props;
+    const [isOpen, setIsOpen] = useState(false);
 
 
 

@@ -12,7 +12,7 @@ export default function Welcome({
 
     return (
         <>
-            <Head title="Welcome">
+            <Head title="Hasiera">
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link
                     href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600"
@@ -40,7 +40,7 @@ export default function Welcome({
                     {/* Sección de Descripción */}
                     <div className="text-center max-w-2xl">
                         <h2 className="text-3xl font-bold tracking-widest uppercase mb-4 text-gray-800">
-                            DESKRIPZIOA
+                            PISUKIDEAK
                         </h2>
                         <p className="text-lg text-gray-600 leading-relaxed">
                             <strong>Pisukideak</strong> zure etxeko bizikidetza errazteko diseinatutako web aplikazioa da. 
