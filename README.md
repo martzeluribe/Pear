@@ -294,7 +294,7 @@ Talde-lanari dagokionez, esperientzia oso positiboa izan da. Lanak banatzen eta 
 
 ![Nabigazio Mapa](./.images/nabigazio_mapa.png)
 
-Bestelako idatzizko eranskin guztiak (Odoo justifikazioa, Diseinua eta erronkarekin bat egin) GitHub-eko .images karpetaren barruan daude.
+Bestelako idatzizko eranskin guztiak (Odoo justifikazioa, Diseinua eta erronkarekin bat egin) GitHub-eko dokumentuak karpetaren barruan daude.
 
 ---
 
