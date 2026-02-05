@@ -15,9 +15,9 @@ class UserSeeder extends Seeder
     {
         // 1. USUARIO ADMIN
         User::create([
-            'name'       => 'Pepe Onzima',
-            'email'      => 'web25ponzima@gamil.com',
-            'password'   => Hash::make('12345678'), // La contraseña será 'password'
+            'name'       => 'Administratzailea',
+            'email'      => 'admin@gmail.com',
+            'password'   => Hash::make('admin12345'), // La contraseña será 'password'
             'mota'       => 'admin',
             'odoo_id'    => null,
             'synced'     => false,
@@ -27,8 +27,8 @@ class UserSeeder extends Seeder
         // 2. USUARIO NORMAL (Ejemplo con datos de Odoo)
         User::create([
             'name'       => 'Erabiltzailea',
-            'email'      => 'erabiltzaile@erabiltzaile.com',
-            'password'   => Hash::make('password'),
+            'email'      => 'erabiltzaile@gmail.com',
+            'password'   => Hash::make('erabiltzaile12345'),
             'mota'       => 'user',
             'odoo_id'    => rand(1, 999999),
             'synced'     => true,

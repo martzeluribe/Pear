@@ -5,101 +5,81 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\PisoController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ZereginController; // Inportazio hau ezinbestekoa da
+use App\Http\Controllers\ZereginController;
 use App\Http\Controllers\GastuakController;
-use App\Http\Models\Zereginak;
+use App\Models\Zereginak;
 use App\Http\Middleware\AdminMiddleware;
 
-// --- PÁGINA DE INICIO ---
+// --- PÁGINA DE INICIO (Pública) ---
 Route::get('/', function () {
     return Inertia::render('welcome', [
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
 
-// --- GRUPO PROTEGIDO (Solo usuarios logueados) ---
+// --- GRUPO AUTENTICADO (Cualquier usuario logueado) ---
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // ==========================================
-    // KUDEAKETA: PISUAK (Apartamentos)
+    // 1. DASHBOARD
+    // ==========================================
+    Route::get('/dashboard', function () {
+        $userId = auth()->id();
+        $zereginak = Zereginak::where('arduraduna_id', $userId)
+            ->with('pisua')
+            ->orderBy('muga_data', 'asc')
+            ->get();
+        return Inertia::render('dashboard', [
+            'zereginak' => $zereginak
+        ]);
+    })->name('dashboard');
+
+    // ==========================================
+    // 2. GESTIÓN DE PISOS (Orden Importante)
     // ==========================================
     
-    // 1. Creación (Debe ir ANTES de las rutas con {id})
+    // A. CREACIÓN (Debe ir PRIMERO, antes de {pisua})
+    // Esto soluciona tu error 404. Laravel leerá esto antes que el comodín.
     Route::get('/pisua/sortu', [PisoController::class, 'create'])->name('pisua.sortu');
     Route::post('/pisua', [PisoController::class, 'store'])->name('pisua.store');
     
-    // 2. Listados
-    Route::get('/pisua', [PisoController::class, 'index'])->name('pisua.index');
+    // B. LISTADOS
     Route::get('/nirepisuak', [PisoController::class, 'userDashboard'])->name('pisua.nire_pisuak');
 
-    // 3. Acciones sobre un piso específico (Wildcards {pisua})
-    Route::get('/pisua/{pisua}', [PisoController::class, 'show'])->name('pisua.show'); // Vista principal del piso
+    // C. VISTA INDIVIDUAL (El comodín {pisua} va al final de este bloque)
+    Route::get('/pisua/{pisua}', [PisoController::class, 'show'])->name('pisua.show');
+    
+    // D. ACCIONES DENTRO DEL PISO
     Route::get('pisua/{pisua}/edit', [PisoController::class, 'edit'])->name('pisua.edit');
     Route::put('pisua/{pisua}', [PisoController::class, 'update'])->name('pisua.update');
-    Route::delete('/pisua/{pisua}', [PisoController::class, 'destroy'])->name('pisua.destroy');
     
-    // 4. Añadir miembro (Modal en Show.tsx)
+    // E. MIEMBROS
     Route::post('/pisua/{pisua}/add-member', [PisoController::class, 'addMember'])->name('pisua.addMember');
-
-
-    // ==========================================
-    // KUDEAKETA: ZEREGINAK (Tareas)
-    // ==========================================
-    
-    Route::get('/zereginak', [ZereginController::class, 'index'])->name('zereginak.index');
-    Route::post('/zereginak', [ZereginController::class, 'store'])->name('zereginak.store');
-    Route::put('/zereginak/{id}', [ZereginController::class, 'update'])->name('zereginak.update'); // Marcar como hecha
-    Route::delete('/zereginak/{id}', [ZereginController::class, 'destroy'])->name('zereginak.destroy');
-
-
-    // ==========================================
-    // KUDEAKETA: ERABILTZAILEAK (Usuarios) & DASHBOARD
-    // ==========================================
-
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
-    
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');           
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');   
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');           
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');  
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');   
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy'); 
-
-
-
-
-
-    Route::post('/gastuak', [GastuakController::class, 'store'])->name('gastuak.store');
-    Route::delete('/gastuak/{gastu}', [GastuakController::class, 'destroy'])->name('gastuak.destroy');
     Route::delete('/pisua/{pisua}/member/{user}', [PisoController::class, 'removeMember'])->name('pisua.removeMember');
 
+    // ==========================================
+    // 3. GESTIÓN DE TAREAS
+    // ==========================================
+    Route::get('/zereginak', [ZereginController::class, 'index'])->name('zereginak.index');
+    Route::post('/zereginak', [ZereginController::class, 'store'])->name('zereginak.store');
+    Route::put('/zereginak/{id}', [ZereginController::class, 'update'])->name('zereginak.update');
+    Route::delete('/zereginak/{id}', [ZereginController::class, 'destroy'])->name('zereginak.destroy');
 
-    Route::get('/dashboard', function () {
-    $userId = auth()->id();
-    
-    // Obtenemos todas las tareas asignadas al usuario, cargando la relación 'pisua'
-    $zereginak = \App\Models\Zereginak::where('arduraduna_id', $userId)
-        ->with('pisua') // IMPORTANTE: Cargar el piso para mostrar el nombre
-        ->orderBy('muga_data', 'asc')
-        ->get();
+    // ==========================================
+    // 4. GESTIÓN DE GASTOS
+    // ==========================================
+    Route::post('/gastuak', [GastuakController::class, 'store'])->name('gastuak.store');
+    Route::delete('/gastuak/{gastu}', [GastuakController::class, 'destroy'])->name('gastuak.destroy');
 
-    return Inertia::render('dashboard', [
-        'zereginak' => $zereginak
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+    // ==========================================
+    // 5. ZONA DE ADMINISTRADOR
+    // ==========================================
+    Route::middleware([AdminMiddleware::class])->group(function () {
+        Route::resource('users', UserController::class);
+        // Usamos solo index y destroy para admins globales, ya que create/store lo gestiona el usuario arriba
+        Route::resource('pisua', PisoController::class)->only(['index', 'destroy']);
+    });
 
-
-
-// ... resto de tus rutas ...
-
-// Grupo protegido para Administradores
-Route::middleware(['auth', AdminMiddleware::class])->group(function () {
-    // Rutas protegidas
-    Route::resource('users', \App\Http\Controllers\UserController::class);
-    Route::resource('pisua', \App\Http\Controllers\PisoController::class);
 });
-}); 
 
 require __DIR__.'/settings.php';

@@ -18,20 +18,20 @@ export default function GastuModal({ isOpen, onClose, users, pisuaId }: Props) {
     const { data, setData, post, processing, reset, errors } = useForm({
         konzeptua: '',
         zenbatekoa: '',
-        ordaintzailea_id: '', // Quién pagó
-        data: new Date().toISOString().split('T')[0], // Fecha de hoy YYYY-MM-DD
-        partaideak: [] as number[], // Array de IDs de usuarios implicados
+        ordaintzailea_id: '',
+        data: new Date().toISOString().split('T')[0],
+        partaideak: [] as number[],
         pisua_id: pisuaId
     });
+
+    // DEFINIR EL LÍMITE AQUÍ
+    const MAX_ZENBATEKOA = 5000; 
 
     if (!isOpen) return null;
 
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
-
         post('/gastuak', {
-            // "transform" permite modificar los datos justo antes de enviarlos.
-            // Aquí forzamos que pisua_id sea el que recibimos por props.
             transform: (data) => ({
                 ...data,
                 pisua_id: pisuaId
@@ -42,7 +42,6 @@ export default function GastuModal({ isOpen, onClose, users, pisuaId }: Props) {
             },
             onError: (errors) => {
                 console.error("Errorea:", errors);
-                // Opcional: alert("Faltan datos: " + Object.keys(errors).join(", "));
             }
         });
     };
@@ -56,8 +55,6 @@ export default function GastuModal({ isOpen, onClose, users, pisuaId }: Props) {
     };
 
     return (
-        // CAMBIO AQUÍ: 'bg-black/30 backdrop-blur-sm' en lugar de 'bg-black bg-opacity-50'
-        // Esto hace que el fondo sea menos oscuro y desenfoque el contenido de atrás.
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm transition-opacity">
             <div className="w-full max-w-lg p-6 bg-white rounded-xl shadow-2xl border border-gray-100">
                 <h2 className="mb-6 text-2xl font-bold text-center text-gray-800 uppercase tracking-tight">Gastu Berria</h2>
@@ -77,16 +74,27 @@ export default function GastuModal({ isOpen, onClose, users, pisuaId }: Props) {
                         {errors.konzeptua && <div className="text-sm text-red-600 mt-1">{errors.konzeptua}</div>}
                     </div>
 
-                    {/* Zenbatekoa */}
+                    {/* Zenbatekoa (CON LÍMITE) */}
                     <div className="mb-4">
-                        <label className="block mb-1 font-medium text-gray-700">Zenbatekoa</label>
+                        <div className="flex justify-between">
+                            <label className="block mb-1 font-medium text-gray-700">Zenbatekoa</label>
+                            <span className="text-xs text-gray-400 mt-1">Max: {MAX_ZENBATEKOA}€</span>
+                        </div>
                         <input
                             type="number"
                             step="0.01"
+                            min="0"                 // 1. Evita números negativos
+                            max={MAX_ZENBATEKOA}    // 2. Establece el máximo para validación HTML
                             placeholder="0.00€"
                             className="w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-2.5"
                             value={data.zenbatekoa}
-                            onChange={e => setData('zenbatekoa', e.target.value)}
+                            onChange={e => {
+                                // 3. Control manual: Si el valor supera el máximo, no lo actualiza (o lo podrías topear)
+                                const val = e.target.value;
+                                if (val === '' || (parseFloat(val) <= MAX_ZENBATEKOA && parseFloat(val) >= 0)) {
+                                    setData('zenbatekoa', val);
+                                }
+                            }}
                             required
                         />
                         {errors.zenbatekoa && <div className="text-sm text-red-600 mt-1">{errors.zenbatekoa}</div>}

@@ -1,0 +1,201 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validation Language Lines (Euskara)
+    |--------------------------------------------------------------------------
+    */
+
+    'accepted'             => ':attribute onartua izan behar da.',
+    'active_url'           => ':attribute ez da baliozko URL bat.',
+    'after'                => ':attribute :date osteko data izan behar da.',
+    'after_or_equal'       => ':attribute :date osteko data edo data berdina izan behar da.',
+    'alpha'                => ':attribute hizkiak soilik izan ditzake.',
+    'alpha_dash'           => ':attribute hizkiak, zenbakiak eta gidoiak soilik izan ditzake.',
+    'alpha_num'            => ':attribute hizkiak eta zenbakiak soilik izan ditzake.',
+    'array'                => ':attribute-k array bat izan behar du.',
+    'before'               => ':attribute :date aurreko data izan behar da.',
+    'before_or_equal'      => ':attribute :date aurreko data edo data berdina izan behar da.',
+    'between'              => [
+        'numeric' => ':attribute :min eta :max artean egon behar da.',
+        'file'    => ':attribute :min eta :max kilobyte artean egon behar da.',
+        'string'  => ':attribute :min eta :max karaktere artean egon behar da.',
+        'array'   => ':attribute :min eta :max elementu artean egon behar da.',
+    ],
+    'boolean'              => ':attribute eremuak egia edo gezurra izan behar du.',
+    'confirmed'            => ':attribute-ren berrespena ez dator bat.',
+    'date'                 => ':attribute ez da baliozko data.',
+    'date_equals'          => ':attribute :date data berdina izan behar da.',
+    'date_format'          => ':attribute datak ez du :format formatua.',
+    'different'            => ':attribute eta :other ezberdinak izan behar dira.',
+    'digits'               => ':attribute :digits digitu izan behar ditu.',
+    'digits_between'       => ':attribute :min eta :max digitu artean egon behar da.',
+    'dimensions'           => ':attribute irudiaren neurriak baliogabeak dira.',
+    'distinct'             => ':attribute eremuak balio bikoiztua du.',
+    'email'                => ':attribute ez da baliozko helbide elektronikoa.',
+    'ends_with'            => ':attribute ondorengo batekin amaitu behar da: :values.',
+    'exists'               => 'Aukeratutako :attribute baliogabea da.',
+    'file'                 => ':attribute fitxategi bat izan behar da.',
+    'filled'               => ':attribute eremuak balio bat izan behar du.',
+    'gt'                   => [
+        'numeric' => ':attribute :value baino handiagoa izan behar da.',
+        'file'    => ':attribute :value kilobyte baino handiagoa izan behar da.',
+        'string'  => ':attribute :value karaktere baino gehiago izan behar ditu.',
+        'array'   => ':attribute :value elementu baino gehiago izan behar ditu.',
+    ],
+    'gte'                  => [
+        'numeric' => ':attribute :value edo handiagoa izan behar da.',
+        'file'    => ':attribute :value kilobyte edo handiagoa izan behar da.',
+        'string'  => ':attribute :value karaktere edo gehiago izan behar ditu.',
+        'array'   => ':attribute :value elementu edo gehiago izan behar ditu.',
+    ],
+    'image'                => ':attribute irudi bat izan behar da.',
+    'in'                   => 'Aukeratutako :attribute baliogabea da.',
+    'in_array'             => ':attribute eremua ez da existitzen :other-n.',
+    'integer'              => ':attribute zenbaki osoa izan behar da.',
+    'ip'                   => ':attribute baliozko IP helbidea izan behar da.',
+    'ipv4'                 => ':attribute baliozko IPv4 helbidea izan behar da.',
+    'ipv6'                 => ':attribute baliozko IPv6 helbidea izan behar da.',
+    'json'                 => ':attribute baliozko JSON katea izan behar da.',
+    'lt'                   => [
+        'numeric' => ':attribute :value baino txikiagoa izan behar da.',
+        'file'    => ':attribute :value kilobyte baino txikiagoa izan behar da.',
+        'string'  => ':attribute :value karaktere baino gutxiago izan behar ditu.',
+        'array'   => ':attribute :value elementu baino gutxiago izan behar ditu.',
+    ],
+    'lte'                  => [
+        'numeric' => ':attribute :value edo txikiagoa izan behar da.',
+        'file'    => ':attribute :value kilobyte edo txikiagoa izan behar da.',
+        'string'  => ':attribute :value karaktere edo gutxiago izan behar ditu.',
+        'array'   => ':attribute :value elementu edo gutxiago izan behar ditu.',
+    ],
+    'max'                  => [
+        'numeric' => ':attribute ezin da :max baino handiagoa izan.',
+        'file'    => ':attribute ezin da :max kilobyte baino handiagoa izan.',
+        'string'  => ':attribute eremuak ezin du :max karaktere baino gehiago izan.',
+        'array'   => ':attribute-k ezin du :max elementu baino gehiago izan.',
+    ],
+    'mimes'                => ':attribute mota honetako fitxategia izan behar da: :values.',
+    'mimetypes'            => ':attribute mota honetako fitxategia izan behar da: :values.',
+    'min'                  => [
+        'numeric' => ':attribute gutxienez :min izan behar da.',
+        'file'    => ':attribute gutxienez :min kilobyte izan behar da.',
+        'string'  => ':attribute eremuak gutxienez :min karaktere izan behar ditu.',
+        'array'   => ':attribute-k gutxienez :min elementu izan behar ditu.',
+    ],
+    'not_in'               => 'Aukeratutako :attribute baliogabea da.',
+    'not_regex'            => ':attribute formatua baliogabea da.',
+    'numeric'              => ':attribute zenbakizkoa izan behar da.',
+    'password'             => 'Pasahitza okerra da.',
+    'present'              => ':attribute eremua egon behar da.',
+    'regex'                => ':attribute formatua baliogabea da.',
+    'required'             => ':attribute eremua derrigorrezkoa da.',
+    'required_if'          => ':attribute eremua derrigorrezkoa da :other :value denean.',
+    'required_unless'      => ':attribute eremua derrigorrezkoa da :other :values-n egon ezean.',
+    'required_with'        => ':attribute eremua derrigorrezkoa da :values dagoenean.',
+    'required_with_all'    => ':attribute eremua derrigorrezkoa da :values daudenean.',
+    'required_without'     => ':attribute eremua derrigorrezkoa da :values ez dagoenean.',
+    'required_without_all' => ':attribute eremua derrigorrezkoa da :values bat ere ez dagoenean.',
+    'same'                 => ':attribute eta :other bat etorri behar dira.',
+    'size'                 => [
+        'numeric' => ':attribute :size izan behar da.',
+        'file'    => ':attribute :size kilobyte izan behar da.',
+        'string'  => ':attribute :size karaktere izan behar ditu.',
+        'array'   => ':attribute :size elementu izan behar ditu.',
+    ],
+    'starts_with'          => ':attribute ondorengo batekin hasi behar da: :values.',
+    'string'               => ':attribute katea izan behar da.',
+    'timezone'             => ':attribute baliozko gunea izan behar da.',
+    'unique'               => ':attribute hau jadanik hartuta dago.',
+    'uploaded'             => ':attribute kargatzean huts egin du.',
+    'url'                  => ':attribute formatua baliogabea da.',
+    'uuid'                 => ':attribute baliozko UUIDa izan behar da.',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Attributes
+    |--------------------------------------------------------------------------
+    |
+    | Hemen eremuen izenak itzul ditzakezu. Adibidez:
+    | "email" => "posta elektronikoa"
+    |
+    */
+
+    'attributes' => [
+        'name'                  => 'izena',
+        'username'              => 'erabiltzailea',
+        'email'                 => 'posta elektronikoa',
+        'first_name'            => 'izena',
+        'last_name'             => 'abizena',
+        'password'              => 'pasahitza',
+        'password_confirmation' => 'pasahitzaren berrespena',
+        'city'                  => 'hiria',
+        'country'               => 'herrialdea',
+        'address'               => 'helbidea',
+        'phone'                 => 'telefonoa',
+        'mobile'                => 'mugikorra',
+        'age'                   => 'adina',
+        'sex'                   => 'sexua',
+        'gender'                => 'generoa',
+        'day'                   => 'eguna',
+        'month'                 => 'hilabetea',
+        'year'                  => 'urtea',
+        'hour'                  => 'ordua',
+        'minute'                => 'minutua',
+        'second'                => 'segundoa',
+        'title'                 => 'izenburua',
+        'content'               => 'edukia',
+        'description'           => 'deskribapena',
+        'excerpt'               => 'pasartea',
+        'date'                  => 'data',
+        'time'                  => 'ordua',
+        'available'             => 'erabilgarria',
+        'size'                  => 'neurria',
+        'role'                  => 'rola',
+        'mota'                  => 'mota',
+        'izena'                 => 'izena',
+        'abizena'               => 'abizena',
+        'helbidea'              => 'helbidea',
+        'hiria'                 => 'hiria',
+        'deskribapena'          => 'deskribapena',
+        'prezioa'               => 'prezioa',
+        'logela_kop'            => 'logela kopurua',
+        'muga_data'             => 'muga data',
+    ],
+
+    'attributes' => [
+        // Usuarios
+        'name'                  => 'izena',
+        'username'              => 'erabiltzailea',
+        'email'                 => 'posta elektronikoa',
+        'first_name'            => 'izena',
+        'last_name'             => 'abizena',
+        'password'              => 'pasahitza',
+        'password_confirmation' => 'pasahitzaren berrespena',
+        'current_password'      => 'oraingo pasahitza',
+        
+        // Pisos (Pisuak)
+        'pisua'                 => 'pisua',
+        'kale_izena'            => 'kalearen izena',
+        'solairua'              => 'solairua',
+        'eskuma_ezkerra'        => 'eskuina/ezkerra',
+        'postakodea'            => 'posta kodea',
+        'herria'                => 'herria',
+        'probintzia'            => 'probintzia',
+        
+        // Tareas (Zereginak) y Gastos (Gastuak)
+        'izena'                 => 'izena',
+        'deskripzioa'           => 'deskripzioa',
+        'arduraduna_id'         => 'arduraduna',
+        'muga_data'             => 'muga data',
+        'konzeptua'             => 'konzeptua',
+        'zenbatekoa'            => 'zenbatekoa',
+        'ordaintzailea_id'      => 'ordaintzailea',
+        'data'                  => 'data',
+        'partaideak'            => 'partaideak',
+        'pisua_id'              => 'pisuaren identifikadorea',
+    ],
+
+];
