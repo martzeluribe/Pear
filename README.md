@@ -272,31 +272,31 @@ Talde-lanari dagokionez, esperientzia oso positiboa izan da. Lanak banatzen eta 
 
 ### Eranskina 1: Talde kontratua
 
-![Talde Kontratua](./images/talde_kontratua.png)
+![Talde Kontratua](./.images/talde_kontratua.png)
 
 ### Eranskina 2: Gantt diagrama
 
-![Gantt Diagrama](./images/gantt_diagrama.png)
+![Gantt Diagrama](./.images/gantt_diagrama.png)
 
 ### Eranskina 3: Erronkarekin bat egin
 
-![Erronkarekin-bat-egin](./images/erronkarekin_bat_egin.png)
+![Erronkarekin-bat-egin](./.images/erronkarekin_bat_egin.png)
 
 ### Eranskina 4: Erabilpen kasu diagrama
 
-![Erabilpen kasu diagrama](./images/erabilpen_kasu_diagrama.png)
+![Erabilpen kasu diagrama](./.images/erabilpen_kasu_diagrama.png)
 
 ### Eranskina 5: Bozetoak
 
-![Bozetoak](./images/bozetoak.png)
+![Bozetoak](./.images/bozetoak.png)
 
 ### Eranskina 6: Estilo gida
 
-![Estilo_gida](./images/estilo_gida.png)
+![Estilo_gida](./.images/estilo_gida.png)
 
 ### Eranskina 7: Nabigazio mapa
 
-![Nabigazio Mapa](./images/nabigazio_mapa.png)
+![Nabigazio Mapa](./.images/nabigazio_mapa.png)
 
 
 
