@@ -133,8 +133,10 @@ export default function NirePisuak({ pisuak }: Props) {
                                         <div className="w-full md:w-7/12 p-6 flex flex-col justify-between h-full overflow-hidden">
                                             
                                             {/* Bloque Superior: Título, Dir, Desc */}
+                                            {/* 'min-w-0' es un truco de flexbox para permitir que el truncate funcione dentro de un flex child */}
                                             <div className="min-w-0"> 
                                                 <div className="flex justify-between items-start">
+                                                    {/* NOMBRE DEL PISO: truncate añade '...' si es muy largo */}
                                                     <h3 className="text-3xl font-bold text-gray-800 mb-1 truncate pr-2" title={pisua.izena}>
                                                         {pisua.izena}
                                                     </h3>
@@ -142,17 +144,15 @@ export default function NirePisuak({ pisuak }: Props) {
 
                                                 {pisua.helbidea && (
                                                     <p className="flex items-center gap-1 text-sm text-gray-600 mb-3 font-medium">
+                                                        {/* shrink-0 evita que el icono se aplaste */}
                                                         <MapPin size={16} className="shrink-0" />
+                                                        {/* truncate en el texto de la dirección */}
                                                         <span className="truncate" title={pisua.helbidea}>{pisua.helbidea}</span>
                                                     </p>
                                                 )}
 
-                                                {/* --- CAMBIO: SCROLL VERTICAL --- */}
-                                                {/* 'max-h-32': Altura máxima */}
-                                                {/* 'overflow-y-auto': Scroll vertical si hace falta */}
-                                                {/* 'overflow-x-hidden': Prohibido scroll horizontal */}
-                                                {/* 'break-words': Rompe palabras largas para que no se salgan */}
-                                                <p className="text-lg text-gray-700 leading-relaxed mb-4 max-h-32 overflow-y-auto overflow-x-hidden break-words custom-scrollbar pr-1" title={pisua.deskripzioa || ''}>
+                                                {/* DESCRIPCION: line-clamp-3 limita a 3 líneas y pone '...' */}
+                                                <p className="text-lg text-gray-700 leading-relaxed mb-4 line-clamp-3" title={pisua.deskripzioa || ''}>
                                                     {pisua.deskripzioa || "Deskripziorik gabe"}
                                                 </p>
                                             </div>

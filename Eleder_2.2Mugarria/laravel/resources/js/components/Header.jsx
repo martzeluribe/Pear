@@ -11,7 +11,6 @@ import { LogIn, House, User, LogOut } from 'lucide-react';
 export default function Header() {
 
     const { auth } = usePage().props;
-    const [isOpen, setIsOpen] = useState(false);
 
 
 
@@ -69,7 +68,7 @@ export default function Header() {
 
                        
 
-                        <Link href="/users" className="hover:text-blue-200">Erabiltzaileen kudeaketa</Link>
+                        <Link href="/users" className="hover:text-blue-200">Erabiltzaileak CRUD</Link>
 
 
 
@@ -77,7 +76,7 @@ export default function Header() {
 
                        
 
-                        <Link href="/pisua" className="hover:text-blue-200">Pisuen kudeaketa</Link>
+                        <Link href="/pisua" className="hover:text-blue-200">Pisuak CRUD</Link>
 
 
 

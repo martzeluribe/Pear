@@ -18,7 +18,7 @@ export default function PisuaHeader({ pisua, activeTab, onTabChange }: PisuaHead
     
     const bgImage = pisua.imagen_path 
         ? `/storage/${pisua.imagen_path}` 
-        : "https://img.freepik.com/foto-gratis/estudio-gris-vacio-liso-abstracto-bien-uso-como-fondoinforme-empresarialplantilla-digital-sitio-web_1258-90252.jpg"; 
+        : "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop"; 
 
     // Estilos para los botones del menú (Nav)
     const getNavBtnClass = (isActive: boolean, isLast: boolean) => 
@@ -45,7 +45,7 @@ export default function PisuaHeader({ pisua, activeTab, onTabChange }: PisuaHead
                 
                 <div className="absolute bottom-0 left-0 p-8 text-white w-full bg-gradient-to-t from-black/80 to-transparent">
                     <h1 
-                        className="text-5xl font-bold uppercase tracking-wider max-w-5xl truncate"
+                        className="text-4xl font-bold uppercase tracking-wider max-w-5xl truncate"
                         title={pisua.izena}
                     >
                         {pisua.izena}
