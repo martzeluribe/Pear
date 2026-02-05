@@ -278,33 +278,27 @@ Talde-lanari dagokionez, esperientzia oso positiboa izan da. Lanak banatzen eta 
 
 ![Gantt Diagrama](./images/gantt_diagrama.png)
 
-### Eranskina 3: Entitate-Erlazio diagrama
+### Eranskina 3: Erronkarekin bat egin
 
-![Entitate-Erlazio Diagrama](./images/er_diagrama.png)
+![Erronkarekin-bat-egin](./images/erronkarekin_bat_egin.png)
 
-### Eranskina 4: Eredu erlazionala
+### Eranskina 4: Erabilpen kasu diagrama
 
-![Eredu Erlazionala](./images/eredu_erlazionala.png)
+![Erabilpen kasu diagrama](./images/erabilpen_kasu_diagrama.png)
 
-### Eranskina 5: Use-Case diagrama
+### Eranskina 5: Bozetoak
 
-![Use-Case Diagrama](./images/use_case_diagrama.png)
+![Bozetoak](./images/bozetoak.png)
 
-### Eranskina 6: Web orrialdeen bozetoa
+### Eranskina 6: Estilo gida
 
-![Bozetoa](./images/bozetoa.png)
+![Estilo_gida](./images/estilo_gida.png)
 
 ### Eranskina 7: Nabigazio mapa
 
 ![Nabigazio Mapa](./images/nabigazio_mapa.png)
 
-### Eranskina 8: Estilo gida
 
-![Estilo Gida](./images/estilo_gida.png)
-
-### Eranskina 9: Prototipoa
-
-![Prototipoa](./images/prototipoa.png)
 
 ---
 
