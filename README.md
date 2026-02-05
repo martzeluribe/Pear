@@ -33,13 +33,13 @@ Emaitza gisa, ikasleek denbora gehiago dute orain ikasketetan arreta jartzeko, k
 
 ## HELBURUAK
 
-### 2.1 HELBURU OROKORRA
+### HELBURU OROKORRA
 
 Proiektu honen helburu nagusia pisukideen arteko gastu-kudeaketa eta elkarbizitza erraztuko duen webgune eskalagarri eta irisgarri bat diseinatzea, garatzea eta ekoizpen-ingurunean hedatzea da.
 
 Helburu hori lortzeko, arkitektura teknologiko aurreratu eta modular bat inplementatu da, hiru zutarri nagusitan oinarrituta: erabiltzailearen esperientzia (React bidezko interfaze moderno eta inklusibo batekin), kudeaketa-logika sendoa (Laravel eta Odoo konbinatuz prozesuak automatizatzeko) eta azpiegitura profesionala (Docker eta AWS Elastic Beanstalk erabiliz hedapen segurua bermatzeko). Azken finean, soluzio tekniko honek gastuen kontrola automatizatu nahi du, gardentasuna, segurtasuna eta irisgarritasuna bermatuz, guztia dokumentazio zehatz batekin.
 
-### 2.2 HELBURU ESPEZIFIKOAK
+### HELBURU ESPEZIFIKOAK
 
 Helburu orokorra lortzeko, honako helburu tekniko eta funtzional hauek bete dira:
 
@@ -77,7 +77,7 @@ Azkenik, egindako lan guztia dokumentatzea izan dugu helburu, pauso bakoitza err
 
 ## BALIABIDEAK
 
-### 4.1 BALIABIDE MATERIALAK
+### BALIABIDE MATERIALAK
 
 Proiektu hau aurrera ateratzeko, oinarri-oinarrizko baliabideetatik hasi gara lanean. Hardwareari dagokionez, Windows 11 SE sistema eragilea duten ordenagailuak erabili ditugu, baina lan-fluxua askoz erosoagoa eta azkarragoa izateko, monitore eta sagu gehigarriak konektatu dizkiegu; horri esker, pantaila batean kodea idatzi eta bestean emaitza ikusi ahal izan dugu. Excalidraw eta Figma diseinu-tresnak erabili ditugu webgunearen itxura, bozetoak eta prototipoak marrazteko; horrela, kodea idazten hasi orduko, bagenekien zehazki nola geratu behar zen dena.
 
@@ -89,7 +89,7 @@ Lan hau taldean egitea erronka bat da, eta hori kudeatzeko GitHub erabili dugu. 
 
 Azkenik, sistema guztiak bateratzeko eta Interneten jartzeko, teknologia aurreratuak erabili ditugu. Docker oso garrantzitsua izan da: gure aplikazioa "edukiontzi" batean sartzeko balio du, gure ordenagailuan bezala funtziona dezan edozein lekutan. Edukiontzi horren barruan, Laravel eta Odoo elkarrekin komunikatzen dira API bidez, datuak JSON edo XML formatuan trukatuz. Bukatzeko, guztia munduarentzat eskuragarri jartzeko, AWS (Amazon Web Services) erabili dugu. Zehazki, Elastic Beanstalk zerbitzua aukeratu dugu; honek, gure Docker edukiontzia hartu eta automatikoki prestatzen ditu zerbitzariak, guk azpiegituraren kudeaketa konplexuaz arduratu beharrik gabe.
 
-### 4.2 GIZA BALIABIDEAK
+### GIZA BALIABIDEAK
 
 Proiektu honetan 3 pertsona ibili gara lanean, Martzel Galdaera, Eleder Uribelarrea eta Josune Jimenez. Elederrek hartu du kordinatzaile rola.
 
@@ -238,19 +238,19 @@ Era berean, Odoo-ko modulu bat garatzeko ezagutzarik ez dugu izan arren, jasotak
 
 Proiektu hau amaitzeak ez du soilik web-aplikazio baten garapena suposatu; ibilbide intentsiboa izan da, non teoria praktika bihurtu den. Hilabete hauetako lanaren ondoren, hainbat ondorio atera ditugu lau ardatz nagusitan:
 
-### 8.1 ZER IKASI DUGU?
+### ZER IKASI DUGU?
 
 Teknologia ezberdinak (React, Laravel eta Odoo) sistema bakar batean integratzen ikasi dugu. Bereziki garrantzitsua izan da Docker eta AWS menperatzea; horiei esker, aplikazioa ingurune lokalean garatzeaz gain, benetako zerbitzari batean hedatzen eta mantentzen ikasi dugu.
 
-### 8.2 DENBORA
+### DENBORA
 
 Plangintza bat izan arren, egiaztatu dugu erroreak konpontzeak eta azpiegitura konfiguratzeak kode berria idazteak baino denbora gehiago eskatzen dutela askotan. Garapen-proiektuetan beti aurreikusi behar da marjina handiagoa ezusteko teknikoetarako.
 
-### 8.3 TALDE-LANA
+### TALDE-LANA
 
 Talde-lanari dagokionez, esperientzia oso positiboa izan da. Lanak banatzen eta koordinatzen jakin dugu, eta sortu diren arazoak elkarlanean konpondu ditugu. Komunikazioa funtsezkoa izan da, eta prozesu osoan zehar taldekide guztien arteko harremanak eta elkarlanaren dinamika oso onak izan dira. Horrek lan-giro egonkor eta produktiboa sortu du, eta ikasi dugu proiektu bat ez dela soilik norbanakoen lana, baizik eta taldearen arteko koordinazioaren emaitza zuzena.
 
-### 8.4 ETORKIZUNEKO ALDAKETAK
+### ETORKIZUNEKO ALDAKETAK
 
 **Odoo eta Laravel integrazioa:** Hau izan da erronkarik handiena eta ez dugu lortu bi sistemen arteko konexioa guztiz burutzea. Etorkizuneko lehentasun nagusia API bidezko komunikazio hori konpontzea litzateke, webgunean sortutako datuak ERP sisteman automatikoki erregistratuta gera daitezen.
 
