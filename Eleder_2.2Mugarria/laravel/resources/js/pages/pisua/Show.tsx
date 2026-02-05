@@ -308,52 +308,52 @@ export default function Show({ pisua, isAdmin, zereginak = [], gastuak = [], bal
             <main className="flex-grow">
                 <PisuaHeader pisua={pisua} activeTab={activeTab} onTabChange={setActiveTab} />
 
-                <div className="max-w-7xl mx-auto p-8 min-h-[600px]">
+                <div className="max-w-7xl mx-auto p-4 md:p-8 min-h-[600px]">
 
                     {/* --- PESTAÑA INFORMACIÓN --- */}
                     {activeTab === 'informazioa' && (
                         <div className="animate-fade-in space-y-6">
-                            <div className="bg-[#9EE4B8] rounded-xl p-8 relative shadow-sm">
+                            <div className="bg-[#9EE4B8] rounded-xl p-6 md:p-8 relative shadow-sm">
                                 {isAdmin && (
-                                    <div className="absolute top-6 right-6">
-                                        <Link href={`/pisua/${pisua.id}/edit`} className="flex items-center gap-2 bg-[#6366f1] hover:bg-[#4f46e5] text-white px-4 py-2 rounded-lg shadow-md transition font-medium">
+                                    <div className="md:absolute md:top-6 md:right-6 mb-6 md:mb-0">
+                                        <Link href={`/pisua/${pisua.id}/edit`} className="inline-flex items-center gap-2 bg-[#6366f1] hover:bg-[#4f46e5] text-white px-4 py-2 rounded-lg shadow-md transition font-medium w-full md:w-auto justify-center">
                                             <PenLine size={18} /> Editatu informazioa
                                         </Link>
                                     </div>
                                 )}
 
                                 <div className="space-y-8">
-                                    <div className="max-w-3xl mt-2">
+                                    <div className="w-full mt-2">
                                         <h2 className="text-xl font-bold text-gray-800 mb-2">Deskripzioa</h2>
                                         <div className="bg-white/20 p-4 rounded-lg border border-white/30 backdrop-blur-sm w-full">
-                                            <p className="text-gray-800 leading-relaxed font-medium line-clamp-3">{pisua.deskripzioa || "Ez dago deskripziorik."}</p>
+                                            <p className="text-gray-800 leading-relaxed font-medium">{pisua.deskripzioa || "Ez dago deskripziorik."}</p>
                                         </div>
                                     </div>
 
                                     {/* Carrusel Usuarios (INFORMACION) */}
                                     <div className="w-full relative group">
-                                        <div className="flex justify-between items-center mb-4">
+                                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
                                             {isAdmin ? (
-                                                <button onClick={() => setIsMemberModalOpen(true)} className="flex items-center gap-2 bg-[#6366f1] hover:bg-[#4f46e5] text-white px-5 py-2 rounded-lg shadow-md font-medium transition">
+                                                <button onClick={() => setIsMemberModalOpen(true)} className="flex items-center gap-2 bg-[#6366f1] hover:bg-[#4f46e5] text-white px-5 py-2 rounded-lg shadow-md font-medium transition w-full md:w-auto justify-center">
                                                     <UserPlus size={20} /> Gehitu pisukidea
                                                 </button>
                                             ) : <div />}
                                             
                                             {/* Flechas Scroll Informazioa */}
                                             {showArrows && (
-                                                <div className="flex gap-3">
+                                                <div className="hidden md:flex gap-3">
                                                     <button onClick={() => scroll(scrollContainerRef, 'left')} className="p-2 rounded-full bg-[#6366f1] text-white"><ChevronLeft size={22} /></button>
                                                     <button onClick={() => scroll(scrollContainerRef, 'right')} className="p-2 rounded-full bg-[#6366f1] text-white"><ChevronRight size={22} /></button>
                                                 </div>
                                             )}
                                         </div>
-                                        <div ref={scrollContainerRef} className="flex overflow-x-auto gap-6 pb-4 scroll-smooth no-scrollbar items-start">
+                                        <div ref={scrollContainerRef} className="flex overflow-x-auto gap-4 md:gap-6 pb-4 scroll-smooth no-scrollbar items-start">
                                             {pisua.users && pisua.users.map((user, index) => (
-                                                <div key={user.id} className={`${getCardColor(user.id, index)} relative flex-shrink-0 w-44 h-44 p-4 rounded-2xl shadow-sm flex flex-col items-center justify-between border border-black/5 hover:scale-105 transition-transform`}>
+                                                <div key={user.id} className={`${getCardColor(user.id, index)} relative flex-shrink-0 w-36 h-36 md:w-44 md:h-44 p-4 rounded-2xl shadow-sm flex flex-col items-center justify-between border border-black/5 hover:scale-105 transition-transform`}>
                                                     {user.id === pisua.user_id && <div className="absolute top-3 right-3 bg-black/10 p-1.5 rounded-full"><Crown size={16} /></div>}
                                                     
                                                     <div className="flex-grow flex items-center justify-center">
-                                                        <span className="font-bold text-gray-900 text-lg text-center">{user.name}</span>
+                                                        <span className="font-bold text-gray-900 text-base md:text-lg text-center break-words px-2">{user.name}</span>
                                                     </div>
 
                                                     {/* BOTONES DE ACCIÓN: SOLO SI ERES ADMIN Y NO ES TU PROPIA TARJETA */}
@@ -362,19 +362,19 @@ export default function Show({ pisua, isAdmin, zereginak = [], gastuak = [], bal
                                                             {/* Botón EDITAR */}
                                                             <button 
                                                                 onClick={() => openEditModal(user)}
-                                                                className="w-12 h-10 flex items-center justify-center bg-[#FFFF00] rounded-xl hover:bg-yellow-200 transition-colors shadow-md"
+                                                                className="w-10 h-8 md:w-12 md:h-10 flex items-center justify-center bg-[#FFFF00] rounded-xl hover:bg-yellow-200 transition-colors shadow-md"
                                                                 title="Editatu erabiltzailea"
                                                             >
-                                                                <Edit size={20} color="black" strokeWidth={2.5} />
+                                                                <Edit size={18} color="black" strokeWidth={2.5} />
                                                             </button>
 
                                                             {/* Botón BORRAR */}
                                                             <button 
                                                                 onClick={() => deleteMember(user.id)}
-                                                                className="w-12 h-10 flex items-center justify-center bg-[#FF0000] rounded-xl hover:bg-red-600 transition-colors shadow-md"
+                                                                className="w-10 h-8 md:w-12 md:h-10 flex items-center justify-center bg-[#FF0000] rounded-xl hover:bg-red-600 transition-colors shadow-md"
                                                                 title="Kanporatu erabiltzailea"
                                                             >
-                                                                <Trash2 size={20} color="black" strokeWidth={2.5} />
+                                                                <Trash2 size={18} color="black" strokeWidth={2.5} />
                                                             </button>
                                                         </div>
                                                     )}
@@ -387,14 +387,14 @@ export default function Show({ pisua, isAdmin, zereginak = [], gastuak = [], bal
 
                             {/* Estadísticas */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="bg-[#C4CDD5] p-8 rounded-xl shadow-sm h-48 flex flex-col justify-center">
-                                    <h3 className="text-2xl text-gray-800 font-bold mb-2">Zereginak</h3>
-                                    <span className="text-4xl font-normal text-gray-900">{zereginak.length}</span>
+                                <div className="bg-[#C4CDD5] p-6 md:p-8 rounded-xl shadow-sm h-40 md:h-48 flex flex-col justify-center">
+                                    <h3 className="text-xl md:text-2xl text-gray-800 font-bold mb-2">Zereginak</h3>
+                                    <span className="text-3xl md:text-4xl font-normal text-gray-900">{zereginak.length}</span>
                                     <span className="text-gray-600 mt-1">{zereginak.filter(z => !z.eginda).length} zain</span>
                                 </div>
-                                <div className="bg-[#C4CDD5] p-8 rounded-xl shadow-sm h-48 flex flex-col justify-center">
-                                    <h3 className="text-2xl text-gray-800 font-bold mb-2">Gastuak</h3>
-                                    <span className="text-4xl font-normal text-gray-900">
+                                <div className="bg-[#C4CDD5] p-6 md:p-8 rounded-xl shadow-sm h-40 md:h-48 flex flex-col justify-center">
+                                    <h3 className="text-xl md:text-2xl text-gray-800 font-bold mb-2">Gastuak</h3>
+                                    <span className="text-3xl md:text-4xl font-normal text-gray-900">
                                         {gastuak.reduce((acc, curr) => acc + Number(curr.zenbatekoa), 0).toFixed(2)}€
                                     </span>
                                 </div>
@@ -404,15 +404,15 @@ export default function Show({ pisua, isAdmin, zereginak = [], gastuak = [], bal
 
                     {/* --- PESTAÑA ZEREGINAK --- */}
                     {activeTab === 'zereginak' && (
-                        <div className="animate-fade-in space-y-12">
-                            <div className="bg-[#8da2c0] rounded-xl shadow-lg p-0 pb-16 relative">
-                                <div className="flex justify-between items-center p-5">
+                        <div className="animate-fade-in space-y-8 md:space-y-12">
+                            <div className="bg-[#8da2c0] rounded-xl shadow-lg p-0 flex flex-col">
+                                <div className="flex flex-col sm:flex-row justify-between sm:items-center p-5 gap-4">
                                     <h2 className="text-lg font-medium text-gray-900">Zereginen zerrenda</h2>
-                                    <div className="relative">
+                                    <div className="relative w-full sm:w-auto">
                                         <input
                                             type="text"
                                             placeholder="Bilatu..."
-                                            className="w-40 pl-4 pr-10 py-1 rounded-full bg-white border-none text-sm focus:ring-2 focus:ring-indigo-400"
+                                            className="w-full sm:w-50 pl-4 pr-10 py-1 rounded-full bg-white border-none text-sm focus:ring-2 focus:ring-indigo-400"
                                             value={bilaketaTerminoa}
                                             onChange={(e) => setBilaketaTerminoa(e.target.value)}
                                         />
@@ -420,7 +420,7 @@ export default function Show({ pisua, isAdmin, zereginak = [], gastuak = [], bal
                                     </div>
                                 </div>
 
-                                <div className="px-3 space-y-2">
+                                <div className="px-3 space-y-2 flex-grow">
                                     {zereginakFiltratuak.length === 0 ? (
                                         <div className="bg-white/80 rounded-lg p-10 text-center">
                                             <p className="text-gray-600">Ez dago zereginik irizpide hauekin.</p>
@@ -442,38 +442,38 @@ export default function Show({ pisua, isAdmin, zereginak = [], gastuak = [], bal
                                                 : 'text-gray-700';
 
                                             return (
-                                                <div key={zeregina.id} className="bg-[#dee5f0] rounded-lg p-4 flex items-center justify-between shadow-sm transition-all hover:shadow-md">
-                                                    <div className="flex items-center gap-4">
+                                                <div key={zeregina.id} className="bg-[#dee5f0] rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between shadow-sm transition-all hover:shadow-md gap-4">
+                                                    <div className="flex items-center gap-4 flex-grow overflow-hidden">
                                                         <input
                                                             type="checkbox"
                                                             checked={zeregina.eginda}
                                                             onChange={() => toggleZeregina(zeregina)}
-                                                            className="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                                                            className="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer flex-shrink-0"
                                                         />
-                                                        <button onClick={() => deleteZeregina(zeregina.id)} className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase px-3 py-1.5 rounded transition">
+                                                        <button onClick={() => deleteZeregina(zeregina.id)} className="bg-red-600 hover:bg-red-700 text-white text-[10px] md:text-xs font-bold uppercase px-2 py-1 md:px-3 md:py-1.5 rounded transition flex-shrink-0">
                                                             Ezabatu
                                                         </button>
 
-                                                        <span className={testuEstiloa}>
+                                                        <span className={`${testuEstiloa} text-sm md:text-base break-words whitespace-normal max-w-[150px] sm:max-w-[300px] md:max-w-[400px] block`}>
                                                             {zeregina.izenburua}
                                                         </span>
                                                     </div>
 
-                                                    <div className="flex items-center gap-6">
-                                                        <div className={`text-sm font-mono flex gap-4 ${dataEstiloa}`}>
+                                                    <div className="flex items-center justify-between md:justify-end gap-4 md:gap-6 border-t md:border-t-0 pt-2 md:pt-0 flex-shrink-0">
+                                                        <div className={`text-xs md:text-sm font-mono flex gap-2 md:gap-4 ${dataEstiloa}`}>
                                                             <span>{formatuData(zeregina.muga_data)}</span>
                                                             <span>{formatuOrdua(zeregina.muga_data)}</span>
                                                         </div>
 
                                                         {zeregina.arduraduna ? (
                                                             <span
-                                                                className="px-4 py-1 rounded-full text-sm font-semibold text-gray-800 shadow-sm border border-white/20"
+                                                                className="px-3 py-1 md:px-4 md:py-1 rounded-full text-[11px] md:text-sm font-semibold text-gray-800 shadow-sm border border-white/20"
                                                                 style={{ backgroundColor: lortuKolorea(zeregina.arduraduna.id) }}
                                                             >
                                                                 {zeregina.arduraduna.name}
                                                             </span>
                                                         ) : (
-                                                            <span className="bg-gray-400 text-white px-4 py-1 rounded-full text-sm">?</span>
+                                                            <span className="bg-gray-400 text-white px-3 py-1 rounded-full text-xs">?</span>
                                                         )}
                                                     </div>
                                                 </div>
@@ -482,15 +482,15 @@ export default function Show({ pisua, isAdmin, zereginak = [], gastuak = [], bal
                                     )}
                                 </div>
 
-                                <div className="absolute -bottom-6 right-8 flex flex-col items-center z-10">
-                                    <button onClick={() => setIsTaskModalOpen(true)} className="flex items-center gap-2 bg-[#6366f1] text-white px-8 py-2.5 rounded-full shadow-lg hover:bg-indigo-700 transition">
+                                <div className="p-5 flex justify-center md:justify-end mt-2">
+                                    <button onClick={() => setIsTaskModalOpen(true)} className="flex items-center justify-center gap-2 bg-[#6366f1] text-white px-6 md:px-8 py-2.5 rounded-full shadow-lg hover:bg-indigo-700 transition w-full md:w-auto">
                                         <PlusCircle className="w-5 h-5" />
                                         <span className="font-semibold text-sm">Zeregin berria</span>
                                     </button>
                                 </div>
                             </div>
 
-                            <div className="max-w-3xl mx-auto p-6 flex justify-center calendar-container text-lg bg-white rounded-xl shadow-sm border border-gray-100">
+                            <div className="max-w-3xl mx-auto p-4 md:p-6 flex justify-center calendar-container text-lg bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                                 <Calendar
                                     onChange={setDataHautatua}
                                     value={dataHautatua}
