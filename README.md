@@ -72,7 +72,7 @@ Azkenik, egindako lan guztia dokumentatzea izan dugu helburu, pauso bakoitza err
 ---
 
 ## ZEREGINAK ETA KRONOGRAMA
-![Gantt Diagrama](./.images/gantt_diagrama.png)
+![Gantt Diagrama](./.images/gantt_diagrama1.png)
 ---
 
 ## BALIABIDEAK
@@ -276,7 +276,7 @@ Talde-lanari dagokionez, esperientzia oso positiboa izan da. Lanak banatzen eta 
 
 ### Eranskina 2: Gantt diagrama
 
-![Gantt Diagrama](./.images/gantt_diagrama.png)
+![Gantt Diagrama](./.images/gantt_diagrama1.png)
 
 ### Eranskina 3: Nabigazio mapa
 
