@@ -8,11 +8,16 @@
         <meta name="keywords" content="pisu, pisua, kudeaketa, kudeatu, kudeaketak, zereginak, zeregin, gastu, gastuak, informazio, informazioa, erabiltzaile, elkarbizitza, etxea, pisukideak, alokairua, antolakuntza, zerrendak, ordainketak, egoiliarrak, etxeko lanak, egutegia, egutegi, erosketak, erosketa zerrenda, garbiketa, partekatu, kontuak, dirua, bizikidetza, errenta, jabekideak">
         <meta name="author" content="Pear taldea">
         <!--URL partekatzen denean:-->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ url()->current() }}">
         <meta property="og:title" content="{{ config('app.name') }}">
         <meta property="og:description" content="Pisuak kudeatzeko web aplikazio integratua.">
         <meta property="og:image" content="{{ asset('images/Welcomeirudia.png') }}">
-        <meta property="og:type" content="website">
-
+        <!--twitter partekatzen denean:-->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ config('app.name') }}">
+        <meta name="twitter:description" content="Pisuak kudeatzeko web aplikazio integratua.">
+        <meta name="twitter:image" content="{{ asset('images/Welcomeirudia.png') }}">
 
 
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}

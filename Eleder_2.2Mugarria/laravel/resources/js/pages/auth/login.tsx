@@ -23,7 +23,11 @@ export default function Login({
     return (
         <div className="flex min-h-screen flex-col bg-gray-50">
             <Head title="Hasi saioa" />
-
+                <title>Hasi saioa</title>
+                <meta name="description" content="Kudeatu zure pisua erraz." />
+                {/* Facebook/WhatsApp-erako gainidatzi */}
+                <meta property="og:title" content="Pisuak Zerrenda - Pisukideak" />
+                <meta property="og:description" content="Hona hemen pisua." />
             <Header />
 
             {/* CAMBIOS AQUÍ:

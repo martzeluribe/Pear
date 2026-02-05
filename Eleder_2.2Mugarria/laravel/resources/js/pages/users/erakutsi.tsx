@@ -52,7 +52,13 @@ const Erakutsi = ({ users, filters }: Props) => {
             <Header />
             
             <main className="flex-grow bg-gray-100 p-8">
-                <Head title="Erabiltzaileak" />
+                <Head title="Erabiltzaileak">
+                    <title>Erabiltzaileak</title>
+                    <meta name="description" content="Kudeatu Erabiltzaileak erraz." />
+                    {/* Facebook/WhatsApp-erako gainidatzi */}
+                    <meta property="og:title" content="Erabiltzaileen Zerrenda - Pisukideak" />
+                    <meta property="og:description" content="Kudeatu Erabiltzaileak." />
+                </Head>
                 
                 <div className="max-w-7xl mx-auto bg-gray-200 shadow-sm rounded-xl p-6 border border-gray-300">
                     

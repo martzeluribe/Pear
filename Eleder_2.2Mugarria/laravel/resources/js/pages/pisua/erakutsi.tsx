@@ -84,7 +84,13 @@ export default function Erakutsi({ pisuak = [], filters = {} }: Props) {
             <Header/>
             
             <main className="flex-grow bg-gray-100 p-8">
-                <Head title="Pisuen Zerrenda" />
+                <Head title="Pisuen Zerrenda">
+                    <title>Pisuen Zerrenda</title>
+                    <meta name="description" content="Kudeatu pisuak erraz." />
+                    {/* Facebook/WhatsApp-erako gainidatzi */}
+                    <meta property="og:title" content="Pisuak Zerrenda - Pisukideak" />
+                    <meta property="og:description" content="Kudeatu pisuak." />
+                </Head>
                 
                 <div className="max-w-7xl mx-auto bg-gray-200 shadow-sm rounded-xl p-6 border border-gray-300">
                     

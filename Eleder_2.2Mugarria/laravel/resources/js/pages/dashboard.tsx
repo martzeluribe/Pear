@@ -90,7 +90,13 @@ export default function Dashboard({ zereginak }: DashboardProps) {
     return (
         <div className="flex flex-col min-h-screen bg-white font-sans text-gray-800">
             <style>{customStyles}</style>
-            <Head title="Nire Panela" />
+            <Head title="Nire Laburpena">
+                <title>Nire Laburpena - pisukideak</title>
+                <meta name="description" content="Kudeatu Laburpena erraz." />
+                {/* Facebook/WhatsApp-erako gainidatzi */}
+                <meta property="og:title" content="Pisuen Laburpena - Pisukideak" />
+                <meta property="og:description" content="Kudeatu Laburpena." />
+            </Head>
             <Header />
 
             <main className="flex-grow max-w-7xl mx-auto w-full p-4 lg:p-8">
@@ -108,7 +114,7 @@ export default function Dashboard({ zereginak }: DashboardProps) {
                             <div className="flex justify-between items-center p-5">
                                 <h2 className="text-lg font-medium text-gray-900">
                                     {filterByDate ? `Zereginak (${date.toLocaleDateString()})` : 'Zereginen zerrenda'}
-                                    {filterByDate && <button onClick={resetFilter} className="ml-2 text-xs text-white bg-black/20 px-2 py-0.5 rounded hover:bg-black/30">X</button>}
+                                    {filterByDate && <button onClick={resetFilter} className="ml-2 text-xs text-white bg-black/20 px-2 py-0.5 rounded hover:bg-black/30">Egun guztiak ikusi</button>}
                                 </h2>
                                 <div className="relative">
                                     <input 
@@ -154,7 +160,8 @@ export default function Dashboard({ zereginak }: DashboardProps) {
                                                         Ezabatu 
                                                     </button>
                                                     
-                                                    <span className={`${testuEstiloa} break-words`}> 
+                                                    {/* --- MODIFICACIÓN AQUÍ: max-w y block --- */}
+                                                    <span className={`${testuEstiloa} break-words max-w-[150px] sm:max-w-xs md:max-w-sm block`}> 
                                                         {zeregina.izenburua} 
                                                     </span>
                                                 </div>
@@ -173,7 +180,6 @@ export default function Dashboard({ zereginak }: DashboardProps) {
                                                             {zeregina.pisua.izena} <ArrowRight size={8}/>
                                                         </Link>
 
-                                                        {/* AQUI ESTA EL CAMBIO: Si hay user se muestra, si no, nada */}
                                                         {zeregina.arduraduna && (
                                                             <span 
                                                                 className="px-4 py-1 rounded-full text-xs font-bold text-gray-800 border border-black/10 shadow-sm whitespace-nowrap" 

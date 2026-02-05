@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, FormEvent } from 'react';
 import { Head, Link, useForm, router, usePage } from '@inertiajs/react';
 import Header from '@/Components/Header';
-import Footer from '@/Components/Footer';
-import PisuaHeader from '@/Components/PisuaHeader';
-import GastuModal from '@/Components/GastuModal';
+import Footer from '@/components/footer';
+import PisuaHeader from '@/components/PisuaHeader';
+import GastuModal from '@/components/GastuModal';
 import { Edit, Trash2, UserPlus, PenLine, X, ChevronLeft, ChevronRight, Crown, Search, PlusCircle, User as UserIcon } from 'lucide-react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -302,8 +302,14 @@ export default function Show({ pisua, isAdmin, zereginak = [], gastuak = [], bal
     return (
         <div className="flex flex-col min-h-screen font-sans bg-white">
             <style>{customStyles}</style>
-            <Header />
-            <Head title={pisua.izena} />
+            <Header/>
+            <Head title={pisua.izena}>
+                <title>{pisua.izena + " - Pisua"}</title>
+                <meta name="description" content="Kudeatu zure pisua erraz." />
+                {/* Facebook/WhatsApp-erako gainidatzi */}
+                <meta property="og:title" content="Pisuak Zerrenda - Pisukideak" />
+                <meta property="og:description" content="Hona hemen pisua." />
+            </Head>
 
             <main className="flex-grow">
                 <PisuaHeader pisua={pisua} activeTab={activeTab} onTabChange={setActiveTab} />

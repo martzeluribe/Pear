@@ -39,10 +39,10 @@ export default function Header() {
                             {isAdmin && (
                                 <>
                                     <span className="h-6 border-l border-white opacity-100"></span>
-                                    <Link href="/users" className="hover:text-blue-200 text-yellow-300">Erabiltzaileen kudeaketa</Link>
+                                    <Link href="/users" className="hover:text-blue-200 text-white-300">Erabiltzaileen kudeaketa</Link>
                                     
                                     <span className="h-6 border-l border-white opacity-100"></span>
-                                    <Link href="/pisua" className="hover:text-blue-200 text-yellow-300">Pisuen kudeaketa</Link>
+                                    <Link href="/pisua" className="hover:text-blue-200 text-white-300">Pisuen kudeaketa</Link>
                                 </>
                             )}
                         </div>
@@ -106,8 +106,8 @@ export default function Header() {
                                 {/* SOLO ADMINS EN MÓVIL (según mota) */}
                                 {isAdmin && (
                                     <>
-                                        <Link href="/users" className="hover:text-blue-200 text-yellow-300" onClick={() => setIsOpen(false)}>Erabiltzaileen kudeaketa</Link>
-                                        <Link href="/pisua" className="hover:text-blue-200 text-yellow-300" onClick={() => setIsOpen(false)}>Pisuen kudeaketa</Link>
+                                        <Link href="/users" className="hover:text-blue-200 text-white-300" onClick={() => setIsOpen(false)}>Erabiltzaileen kudeaketa</Link>
+                                        <Link href="/pisua" className="hover:text-blue-200 text-white-300" onClick={() => setIsOpen(false)}>Pisuen kudeaketa</Link>
                                     </>
                                 )}
                             </div>

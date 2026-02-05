@@ -1,7 +1,7 @@
 import React from 'react';
 import { Head, Link } from '@inertiajs/react';
 import Header from '@/Components/Header'; 
-import Footer from '@/Components/Footer';
+import Footer from '@/components/footer';
 import { ArrowRightCircle, Plus, MapPin, Image, Crown } from 'lucide-react';
 
 // --- ESTILOS PARA SCROLLBAR PERSONALIZADO ---
@@ -72,7 +72,13 @@ export default function NirePisuak({ pisuak }: Props) {
             <style>{scrollbarStyle}</style>
             <Header />
             <div className="min-h-screen bg-gray-50 p-6 md:p-10">
-                <Head title="Nire Pisuak" />
+                <Head title="Nire Pisuak">                    
+                    <title>Nire Pisuak</title>
+                    <meta name="description" content="Kudeatu zure pisuak erraz." />
+                    {/* Facebook/WhatsApp-erako gainidatzi */}
+                    <meta property="og:title" content="Pisuak Zerrenda - Pear" />
+                    <meta property="og:description" content="Hona hemen pisuen zerrenda." />
+                </Head>
                 
                 <div className="max-w-6xl mx-auto">
                     

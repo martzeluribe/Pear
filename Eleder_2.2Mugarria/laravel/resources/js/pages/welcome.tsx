@@ -18,6 +18,11 @@ export default function Welcome({
                     href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600"
                     rel="stylesheet"
                 />
+                <title>Hasiera</title>
+                <meta name="description" content="Hasiera - pisukideak." />
+                {/* Facebook/WhatsApp-erako gainidatzi */}
+                <meta property="og:title" content="Hasiera" />
+                <meta property="og:description" content="Hasiera - pisukideak." />
             </Head>
 
             {/* Contenedor principal para asegurar que el footer se quede abajo si hay poco contenido */}
