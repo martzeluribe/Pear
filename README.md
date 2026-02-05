@@ -72,7 +72,7 @@ Azkenik, egindako lan guztia dokumentatzea izan dugu helburu, pauso bakoitza err
 ---
 
 ## ZEREGINAK ETA KRONOGRAMA
-
+![Gantt Diagrama](./.images/gantt_diagrama.png)
 ---
 
 ## BALIABIDEAK
