@@ -91,4 +91,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 }); 
 
+
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+    
+    // Aquí pon todas las rutas que quieres bloquear
+    Route::get('/kudeaketa/erabiltzaileak', [KudeaketaController::class, 'usersIndex'])->name('kudeaketa.users');
+    Route::get('/kudeaketa/pisuak', [KudeaketaController::class, 'flatsIndex'])->name('kudeaketa.flats');
+    
+    // Cualquier otra ruta de administración...
+});
 require __DIR__.'/settings.php';

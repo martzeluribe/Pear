@@ -68,7 +68,7 @@ export default function Header() {
 
                        
 
-                        <Link href="/users" className="hover:text-blue-200">Erabiltzaileak CRUD</Link>
+                        <Link href="/users" className="hover:text-blue-200">Erabiltzaileen kudeaketa</Link>
 
 
 
@@ -76,7 +76,7 @@ export default function Header() {
 
                        
 
-                        <Link href="/pisua" className="hover:text-blue-200">Pisuak CRUD</Link>
+                        <Link href="/pisua" className="hover:text-blue-200">Pisuen kudeaketa</Link>
 
 
 
