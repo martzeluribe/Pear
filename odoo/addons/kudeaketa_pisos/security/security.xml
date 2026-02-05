@@ -1,0 +1,27 @@
+<odoo>
+    <data noupdate="1">
+        
+        <record id="rule_pisos_admin_all" model="ir.rule">
+            <field name="name">Etxebizitzak: Adminak Dena</field>
+            <field name="model_id" ref="model_pisos_piso"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+
+        <record id="rule_pisos_user_read_all" model="ir.rule">
+            <field name="name">Etxebizitzak: Erabiltzaileek dena ikusi</field>
+            <field name="model_id" ref="model_pisos_piso"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field> <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/> <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="rule_pisos_user_write_own" model="ir.rule">
+            <field name="name">Etxebizitzak: Jabeak berea editatu</field>
+            <field name="model_id" ref="model_pisos_piso"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">[('admin_id', '=', user.id)]</field> <field name="perm_read" eval="False"/>   <field name="perm_create" eval="True"/>  <field name="perm_write" eval="True"/>   <field name="perm_unlink" eval="True"/>  </record>
+
+    </data>
+</odoo>
