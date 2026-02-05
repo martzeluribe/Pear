@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZereginController; // Inportazio hau ezinbestekoa da
 use App\Http\Controllers\GastuakController;
 use App\Http\Models\Zereginak;
+use App\Http\Middleware\AdminMiddleware;
 
 // --- PÁGINA DE INICIO ---
 Route::get('/', function () {
@@ -89,6 +90,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+
+// ... resto de tus rutas ...
+
+// Grupo protegido para Administradores
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
+    // Rutas protegidas
+    Route::resource('users', \App\Http\Controllers\UserController::class);
+    Route::resource('pisua', \App\Http\Controllers\PisoController::class);
+});
 }); 
 
 require __DIR__.'/settings.php';

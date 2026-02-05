@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { dashboard, login, register } from '@/routes';
+import { dashboard } from '@/routes'; 
 import { Link, usePage } from '@inertiajs/react'; 
 import { LogIn, House, User, LogOut, Menu, X } from 'lucide-react';
 
@@ -7,9 +7,12 @@ export default function Header() {
     const { auth } = usePage().props;
     const [isOpen, setIsOpen] = useState(false);
 
+    // --- CORREGIDO AQUÍ ---
+    // Usamos 'mota' en lugar de 'role'
+    const isAdmin = auth.user?.mota === 'admin'; 
+
     return (
         <nav className="relative text-white shadow-md w-full z-50" style={{ backgroundColor: '#1e3a8a' }}>
-            {/* Contenedor principal: justify-between mantiene todo en las esquinas */}
             <div className="flex justify-between items-center px-8 py-4">
                 
                 {/* Logo y Contenedor Izquierdo */}
@@ -21,38 +24,39 @@ export default function Header() {
                         <span className="text-2xl font-bold tracking-tight">Pisukideak</span>
                     </Link>
 
-                    {/* LINKS CONDICIONALES (Escritorio) */}
+                    {/* LINKS ESCRITORIO */}
                     {auth.user && (
                         <div className="hidden lg:flex items-center gap-4 text-sm font-medium border-l-2 border-white pl-6 py-1">
                             <Link href="/" className="hover:text-blue-200">Hasiera</Link>
-                            
                             <span className="h-6 border-l border-white opacity-100"></span>
                             
-                            <Link href={dashboard()} className="hover:text-blue-200">Laburpena</Link>
-                            
+                            <Link href={dashboard ? dashboard() : '/dashboard'} className="hover:text-blue-200">Laburpena</Link>
                             <span className="h-6 border-l border-white opacity-100"></span>
                             
                             <Link href="/nirepisuak" className="hover:text-blue-200">Pisuak</Link>
-                            
-                            <span className="h-6 border-l border-white opacity-100"></span>
-                            
-                            <Link href="/users" className="hover:text-blue-200">Erabiltzaileak CRUD</Link>
 
-                            <span className="h-6 border-l border-white opacity-100"></span>
-                            
-                            <Link href="/pisua" className="hover:text-blue-200">Pisuak CRUD</Link>
+                            {/* SOLO VISIBLE SI mota === 'admin' */}
+                            {isAdmin && (
+                                <>
+                                    <span className="h-6 border-l border-white opacity-100"></span>
+                                    <Link href="/users" className="hover:text-blue-200 text-yellow-300">Erabiltzaileen kudeaketa</Link>
+                                    
+                                    <span className="h-6 border-l border-white opacity-100"></span>
+                                    <Link href="/pisua" className="hover:text-blue-200 text-yellow-300">Pisuen kudeaketa</Link>
+                                </>
+                            )}
                         </div>
                     )}
                 </div>
 
-                {/* Parte Derecha: Usuario o Login */}
+                {/* Parte Derecha */}
                 <div className="flex items-center">
                     {/* Botones Escritorio */}
                     <div className="hidden lg:block">
                         {auth.user ? (
                             <div className="flex items-center gap-6">
                                 <Link 
-                                    href="settings/profile" 
+                                    href="/settings/profile" 
                                     className="flex items-center gap-2 hover:text-blue-200 transition-colors group"
                                 >
                                     <User size={18} className="group-hover:scale-110 transition-transform" />
@@ -96,13 +100,19 @@ export default function Header() {
                         <>
                             <div className="flex flex-col gap-3">
                                 <Link href="/" className="hover:text-blue-200" onClick={() => setIsOpen(false)}>Hasiera</Link>
-                                <Link href={dashboard()} className="hover:text-blue-200" onClick={() => setIsOpen(false)}>Laburpena</Link>
+                                <Link href={dashboard ? dashboard() : '/dashboard'} className="hover:text-blue-200" onClick={() => setIsOpen(false)}>Laburpena</Link>
                                 <Link href="/nirepisuak" className="hover:text-blue-200" onClick={() => setIsOpen(false)}>Pisuak</Link>
-                                <Link href="/users" className="hover:text-blue-200" onClick={() => setIsOpen(false)}>Erabiltzaileak CRUD</Link>
-                                <Link href="/pisua" className="hover:text-blue-200" onClick={() => setIsOpen(false)}>Pisuak CRUD</Link>
+                                
+                                {/* SOLO ADMINS EN MÓVIL (según mota) */}
+                                {isAdmin && (
+                                    <>
+                                        <Link href="/users" className="hover:text-blue-200 text-yellow-300" onClick={() => setIsOpen(false)}>Erabiltzaileen kudeaketa</Link>
+                                        <Link href="/pisua" className="hover:text-blue-200 text-yellow-300" onClick={() => setIsOpen(false)}>Pisuen kudeaketa</Link>
+                                    </>
+                                )}
                             </div>
                             <div className="pt-4 border-t border-blue-700 flex justify-between items-center">
-                                <Link href="settings/profile" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
+                                <Link href="/settings/profile" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
                                     <User size={18} />
                                     <span className="font-semibold">{auth.user.name}</span>
                                 </Link>
