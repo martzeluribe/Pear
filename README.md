@@ -278,9 +278,9 @@ Talde-lanari dagokionez, esperientzia oso positiboa izan da. Lanak banatzen eta 
 
 ![Gantt Diagrama](./.images/gantt_diagrama.png)
 
-### Eranskina 3: Erronkarekin bat egin
+### Eranskina 3: Nabigazio mapa
 
-![Erronkarekin-bat-egin](./.images/erronkarekin_bat_egin.png)
+![Nabigazio Mapa](./.images/nabigazio_mapa.png)
 
 ### Eranskina 4: Erabilpen kasu diagrama
 
@@ -290,11 +290,7 @@ Talde-lanari dagokionez, esperientzia oso positiboa izan da. Lanak banatzen eta 
 
 ![Bozetoak](./.images/bozetoak.png)
 
-### Eranskina 6: Estilo gida
-
-![Estilo_gida](./.images/estilo_gida.png)
-
-### Eranskina 7: Nabigazio mapa
+### Eranskina 6: Nabigazio mapa
 
 ![Nabigazio Mapa](./.images/nabigazio_mapa.png)
 
