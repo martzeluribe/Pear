@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <record model="ir.module.category" id="module_category_laravel">
+            <field name="name">Laravel erabiltzaileen kudeaketa</field>
+            <field name="description">"Laraveleko erabiltzaileak odoon kudeatzeko</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="group_laravel_user" model="res.groups">
+            <field name="name">Erabiltzailea</field>
+            <field name="category_id" ref="module_category_laravel"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_laravel_admin" model="res.groups">
+            <field name="name">Admina</field>
+            <field name="category_id" ref="module_category_laravel"/>
+            <field name="implied_ids" eval="[(4, ref('group_laravel_user')), (4, ref('base.group_system'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+    </data>
+</odoo>

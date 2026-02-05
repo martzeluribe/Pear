@@ -1,0 +1,76 @@
+<odoo>
+
+    <record id="view_pisos_lotura_search" model="ir.ui.view">
+        <field name="name">pisos.lotura.search</field>
+        <field name="model">pisos.lotura</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="piso_id"/>
+                <field name="user_id"/>
+                <group expand="1" string="Taldekatu honela">
+                    <filter string="Etxebizitza" name="group_by_piso" context="{'group_by':'piso_id'}"/>
+                    <filter string="Erabiltzailea" name="group_by_user" context="{'group_by':'user_id'}"/>
+                    <filter string="Data (Hilabetea)" name="group_by_date" context="{'group_by':'create_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_pisos_lotura_tree" model="ir.ui.view">
+        <field name="name">pisos.lotura.tree</field>
+        <field name="model">pisos.lotura</field>
+        <field name="arch" type="xml">
+            <tree sample="1" decoration-bf="piso_id">
+                
+                <field name="id" string="ID" optional="hide"/>
+                
+                <field name="piso_id" decoration-bf="1"/>
+                
+                <field name="user_id" widget="many2one_avatar_user"/>
+                
+                <field name="create_date" string="Noiz Sortua" optional="show" widget="date"/>
+                <field name="write_date" string="Aldatze Data" optional="hide" widget="date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_pisos_lotura_form" model="ir.ui.view">
+        <field name="name">pisos.lotura.form</field>
+        <field name="model">pisos.lotura</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="piso_id" class="oe_edit_only" string="Aukeratutako Etxebizitza"/>
+                        <h1>
+                            <field name="piso_id" placeholder="Etxebizitza hautatu..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="user_id" widget="many2one_avatar" options="{'no_create': True}"/>
+                        </group>
+                        <group string="Sistemaren Datuak">
+                            <field name="create_date" readonly="1" widget="datetime"/>
+                            <field name="write_date" readonly="1" widget="datetime"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_pisos_lotura" model="ir.actions.act_window">
+        <field name="name">Pisu-Erabiltzaile Loturak</field>
+        <field name="res_model">pisos.lotura</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_group_by_piso': 1}</field>
+    </record>
+
+    <menuitem id="menu_pisos_lotura"
+              name="Loturak"
+              parent="kudeaketa_pisos.menu_pisos_root"
+              action="action_pisos_lotura"
+              sequence="20"/>
+</odoo>
